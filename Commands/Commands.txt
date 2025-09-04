@@ -1,0 +1,1 @@
+dotnet ef migrations add init --project .\eCommerce.Services --startup-project .\eCommerce.WebAPI
