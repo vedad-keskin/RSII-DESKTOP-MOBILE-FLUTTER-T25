@@ -178,6 +178,8 @@ namespace eCommerce.Services.Database
             modelBuilder.Entity<UserRole>()
                 .HasIndex(ur => new { ur.UserId, ur.RoleId })
                 .IsUnique();
+
+            modelBuilder.SeedData();
         }
     }
 } 
