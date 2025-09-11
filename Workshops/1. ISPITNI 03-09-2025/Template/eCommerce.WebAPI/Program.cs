@@ -16,6 +16,11 @@ builder.Services.AddTransient<IProductTypeService, ProductTypeService>();
 builder.Services.AddTransient<IRoleService, RoleService>();
 builder.Services.AddTransient<IUnitOfMeasureService, UnitOfMeasureService>();
 
+// Nasi serivisi
+builder.Services.AddTransient<IActivityService, ActivityService>();
+builder.Services.AddTransient<IRewardRuleService, RewardRuleService>();
+
+
 builder.Services.AddTransient<BaseProductState>();
 builder.Services.AddTransient<InitialProductState>();
 builder.Services.AddTransient<DraftProductState>();

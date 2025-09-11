@@ -8,6 +8,9 @@ namespace eCommerce.Services.Database
         {
         }
 
+        public DbSet<ActivityIB180079> ActivityIB180079 { get; set; }
+        public DbSet<UserActivityIB180079> UserActivityIB180079 { get; set; }
+        public DbSet<RewardRuleIB180079> RewardRuleIB180079 { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
@@ -178,6 +181,8 @@ namespace eCommerce.Services.Database
             modelBuilder.Entity<UserRole>()
                 .HasIndex(ur => new { ur.UserId, ur.RoleId })
                 .IsUnique();
+
+            modelBuilder.SeedData();
         }
     }
 } 
