@@ -1,16 +1,20 @@
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace eCommerce.Model.Requests
 {
-    public class RoleUpsertRequest
+    public class UserActivityUpsertRequest
     {
         [Required]
-        [MaxLength(50)]
-        public string Name { get; set; } = string.Empty;
-        
-        [MaxLength(200)]
-        public string Description { get; set; } = string.Empty;
-        
-        public bool IsActive { get; set; } = true;
+
+        public int UserId { get; set; }
+
+        [Required]
+
+        public int ActivityId { get; set; }
+
+        public string? Note { get; set; }
+
     }
 } 
