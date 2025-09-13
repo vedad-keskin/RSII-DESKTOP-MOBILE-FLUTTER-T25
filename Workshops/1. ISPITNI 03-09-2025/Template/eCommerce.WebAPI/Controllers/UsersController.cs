@@ -20,7 +20,7 @@ namespace eCommerce.WebAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<UserResponse>>> Get([FromQuery] UserSearchObject? search = null)
+        public async Task<ActionResult<PagedResult<UserResponse>>> Get([FromQuery] UserSearchObject? search = null)
         {
             return await _userService.GetAsync(search ?? new UserSearchObject());
         }

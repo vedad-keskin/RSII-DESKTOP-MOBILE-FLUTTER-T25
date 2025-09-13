@@ -6,6 +6,7 @@ import 'package:ecommerce_mobile/providers/product_provider.dart';
 import 'package:ecommerce_mobile/providers/product_type_provider.dart';
 import 'package:ecommerce_mobile/providers/unit_of_measure_provider.dart';
 import 'package:ecommerce_mobile/providers/user_activity_provider.dart';
+import 'package:ecommerce_mobile/providers/user_provider.dart';
 import 'package:ecommerce_mobile/screens/product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,8 @@ void main() {
         create: (context) => ActivityProvider()),
     ChangeNotifierProvider<UserActivityProvider>(
         create: (context) => UserActivityProvider()),
+    ChangeNotifierProvider<UserProvider>(
+        create: (context) => UserProvider()),
   ], child: const MyLoginApp()));
 }
 

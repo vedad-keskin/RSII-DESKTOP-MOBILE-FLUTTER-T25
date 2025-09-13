@@ -23,31 +23,37 @@ namespace eCommerce.Services
             _context = context;
         }
 
-        public async Task<List<UserResponse>> GetAsync(UserSearchObject search)
+        public async Task<PagedResult<UserResponse>> GetAsync(UserSearchObject search)
         {
-            var query = _context.Users.AsQueryable();
-            
-            if (!string.IsNullOrEmpty(search.Username))
+            var query = _context.Set<User>().AsQueryable();
+            //query = ApplyFilter(query, search);
+
+            int? totalCount = null;
+            if (search.IncludeTotalCount)
             {
-                query = query.Where(u => u.Username.Contains(search.Username));
+                totalCount = await query.CountAsync();
             }
-            
-            if (!string.IsNullOrEmpty(search.Email))
+
+            if (!search.RetrieveAll)
             {
-                query = query.Where(u => u.Email.Contains(search.Email));
+                if (search.Page.HasValue)
+                {
+                    query = query.Skip(search.Page.Value * search.PageSize.Value);
+                }
+                if (search.PageSize.HasValue)
+                {
+                    query = query.Take(search.PageSize.Value);
+                }
             }
-            
-            if (!string.IsNullOrEmpty(search.FTS))
+
+
+
+            var list = await query.ToListAsync();
+            return new PagedResult<UserResponse>
             {
-                query = query.Where(u => 
-                    u.FirstName.Contains(search.FTS) || 
-                    u.LastName.Contains(search.FTS) || 
-                    u.Username.Contains(search.FTS) || 
-                    u.Email.Contains(search.FTS));
-            }
-            
-            var users = await query.ToListAsync();
-            return users.Select(MapToResponse).ToList();
+                Items = list.Select(MapToResponse).ToList(),
+                TotalCount = totalCount
+            };
         }
 
         public async Task<UserResponse?> GetByIdAsync(int id)

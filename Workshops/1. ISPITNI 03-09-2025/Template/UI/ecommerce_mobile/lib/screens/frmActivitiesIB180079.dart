@@ -2,6 +2,7 @@ import 'package:ecommerce_mobile/layouts/master_screen.dart';
 import 'package:ecommerce_mobile/model/search_result.dart';
 import 'package:ecommerce_mobile/model/user_activity.dart';
 import 'package:ecommerce_mobile/providers/user_activity_provider.dart';
+import 'package:ecommerce_mobile/screens/frmNewActivityIB180079.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -73,7 +74,7 @@ class _FrmActivitiesIB180079State extends State<FrmActivitiesIB180079> {
             SizedBox(width: 10),
             ElevatedButton(
               onPressed: () {
-                //Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: null)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => FrmNewActivityIB180079()));
               },
               child: Text("New"),
             )
