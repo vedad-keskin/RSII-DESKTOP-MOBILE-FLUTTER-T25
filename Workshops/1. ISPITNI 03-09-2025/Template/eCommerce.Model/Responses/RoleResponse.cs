@@ -1,12 +1,9 @@
-using System;
-
 namespace eCommerce.Model.Responses
 {
-    public class UserActivityResponse
+    public class RoleResponse
     {
-        public string UserFullName { get; set; } = string.Empty;
-        public string ActivityName { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
-        public DateTime DueDate { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
     }
 } 

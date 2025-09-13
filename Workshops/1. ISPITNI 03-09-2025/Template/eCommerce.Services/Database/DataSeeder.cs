@@ -220,8 +220,36 @@ namespace eCommerce.Services.Database
 
             // --- REWARD RULE ---
             modelBuilder.Entity<RewardRuleIB180079>().HasData(
-                new RewardRuleIB180079 { Id = 1, RewardTitle = "Organizacija sastanka - 10 points", NumberOfPoints = 10, ActivityId = 1 , MaxDaysToComplete = 5  }
-        
+                new RewardRuleIB180079
+                {
+                    Id = 1,
+                    RewardTitle = "Organizacija sastanka - 10 points",
+                    NumberOfPoints = 10,
+                    ActivityId = 1,
+                    MaxDaysToComplete = 5
+                },
+                new RewardRuleIB180079
+                {
+                    Id = 2,
+                    RewardTitle = "Izrada prezentacije - 20 points",
+                    NumberOfPoints = 20,
+                    ActivityId = 2,
+                    MaxDaysToComplete = 15
+                },
+                new RewardRuleIB180079
+                {
+                    Id = 3,
+                    RewardTitle = "Analiza projekta - 30 points",
+                    NumberOfPoints = 30,
+                    ActivityId = 3,
+                    MaxDaysToComplete = 25
+                }
+            );
+
+            // --- USER ACTIVITY ---
+            modelBuilder.Entity<UserActivityIB180079>().HasData(
+                new UserActivityIB180079 { Id = 1, UserId = 1, DateAssigned = DateTime.Now, ActivityId = 1 , RewardTitle = "Organizacija sastanka - 10 points",CompletedAt = DateTime.Now.AddDays(2),RewardedAt = DateTime.Now.AddDays(2),Note = "Random note", Status = "Completed" },
+                 new UserActivityIB180079 { Id = 2, UserId = 2, DateAssigned = DateTime.Now, ActivityId = 2, Note = "Random note", Status = "Cancelled" }
             );
 
         }

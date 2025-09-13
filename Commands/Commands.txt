@@ -1,1 +1,7 @@
+# Pokretanje migracije
+
 dotnet ef migrations add init --project .\eCommerce.Services --startup-project .\eCommerce.WebAPI
+
+# Generisanje .g dijela klase
+
+dart run build_runner build
