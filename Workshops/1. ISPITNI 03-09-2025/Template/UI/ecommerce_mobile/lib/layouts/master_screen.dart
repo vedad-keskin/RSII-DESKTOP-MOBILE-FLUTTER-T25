@@ -1,4 +1,5 @@
 import 'package:ecommerce_mobile/screens/cart_screen.dart';
+import 'package:ecommerce_mobile/screens/frmActivitiesIB180079.dart';
 import 'package:ecommerce_mobile/screens/product_details_screen.dart';
 import 'package:ecommerce_mobile/screens/product_list.dart';
 import 'package:flutter/material.dart';
@@ -33,6 +34,9 @@ class _MasterScreenState extends State<MasterScreen> {
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen()));
             },), ListTile(title: Text('Cart'), onTap: () {
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => CartScreen()));
+            },),
+            ListTile(title: Text('User Activities'), onTap: () {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => FrmActivitiesIB180079()));
             },),
           ],
         ),
