@@ -8,5 +8,7 @@ namespace eCommerce.Model.Responses
         public string ActivityName { get; set; } = string.Empty;
         public string Status { get; set; } = string.Empty;
         public DateTime DueDate { get; set; }
+        public int NumberOfPoints { get; set; }
+
     }
 } 

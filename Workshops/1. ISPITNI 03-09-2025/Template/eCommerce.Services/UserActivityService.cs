@@ -22,12 +22,15 @@ namespace eCommerce.Services
 
             var activity = _context.ActivityIB180079.FirstOrDefault(x => x.Id == entity.ActivityId);
 
+            var reward = _context.RewardRuleIB180079.FirstOrDefault(x => x.ActivityId == entity.ActivityId);    
+
             return new UserActivityResponse
             {
                 UserFullName = $"{user.FirstName} {user.LastName}",
                 Status = entity.Status,
                 ActivityName = activity.Name,
-                DueDate = activity.DueDate
+                DueDate = activity.DueDate,
+                NumberOfPoints = reward?.NumberOfPoints ?? 0, 
 
             };
         }

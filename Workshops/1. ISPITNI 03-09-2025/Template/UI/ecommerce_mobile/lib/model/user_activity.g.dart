@@ -11,6 +11,7 @@ UserActivity _$UserActivityFromJson(Map<String, dynamic> json) => UserActivity(
       activityName: json['activityName'] as String? ?? '',
       status: json['status'] as String? ?? '',
       dueDate: DateTime.parse(json['dueDate'] as String),
+      numberOfPoints: (json['numberOfPoints'] as num?)?.toInt() ?? 0,
     );
 
 Map<String, dynamic> _$UserActivityToJson(UserActivity instance) =>
@@ -19,4 +20,5 @@ Map<String, dynamic> _$UserActivityToJson(UserActivity instance) =>
       'activityName': instance.activityName,
       'status': instance.status,
       'dueDate': instance.dueDate.toIso8601String(),
+      'numberOfPoints': instance.numberOfPoints,
     };

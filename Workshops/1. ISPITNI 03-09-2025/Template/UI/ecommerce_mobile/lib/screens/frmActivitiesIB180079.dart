@@ -34,7 +34,8 @@ class _FrmActivitiesIB180079State extends State<FrmActivitiesIB180079> {
         child: Column(
           children: [
             _buildSearch(),
-            _buildResultView()
+            _buildResultView(),
+            Text("Number of points: ${calculateTotalPoints().toString()}")
           ],
         ),
       ),
@@ -93,6 +94,7 @@ class _FrmActivitiesIB180079State extends State<FrmActivitiesIB180079> {
           DataColumn(label: Text("Activiy")),
           DataColumn(label: Text("Status")), 
           DataColumn(label: Text("Due Date")),
+          DataColumn(label: Text("Points")),
         ],
         rows: userActivities?.items?.map((e) => DataRow(
           // onSelectChanged: (value) {
@@ -103,10 +105,34 @@ class _FrmActivitiesIB180079State extends State<FrmActivitiesIB180079> {
             DataCell(Text(e.activityName)),
             DataCell(Text(e.status)),
             DataCell(Text(e.dueDate.toIso8601String())),
+            DataCell(Text(e.numberOfPoints.toString()))
           ])).toList() ?? [],
       ),
       ),
     ));
   }
+
+
+   int calculateTotalPoints(){
+
+      if(userActivities?.items == null){
+
+          return 0;
+          
+      }
+
+      int sum = 0;
+
+      for(var activity in userActivities!.items!){
+
+          sum += activity.numberOfPoints;
+
+      }
+    
+    return sum;
+
+   }
+
+
 
 }
