@@ -19,6 +19,7 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     super.initState();
     cartProvider = context.read<CartProvider>();
+    cartProvider.loadCart();
   }
 
   @override
