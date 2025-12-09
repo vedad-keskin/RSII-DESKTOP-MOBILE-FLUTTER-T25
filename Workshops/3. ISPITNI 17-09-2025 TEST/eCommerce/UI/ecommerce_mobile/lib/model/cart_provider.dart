@@ -12,6 +12,8 @@ import 'package:http/http.dart' as http;
 class CartProvider with ChangeNotifier {
   Cart cart = Cart();
 
+  static int userId = 0;
+
   static String? _baseUrl;
 
   CartProvider() {
@@ -35,6 +37,21 @@ class CartProvider with ChangeNotifier {
    
   }
 
+
+  Future<int> getUserId(String username) async {
+    final url = "$_baseUrl/$username/me";   // <-- IMPORTANT
+
+      final uri = Uri.parse(url);
+
+
+       final response = await http.get(uri);
+
+        final data = jsonDecode(response.body);
+
+        return data;
+     
+   
+  }
 
 
 

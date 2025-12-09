@@ -23,7 +23,7 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Future<void> _loadCart() async {
-    await cartProvider.getCart(2);
+    await cartProvider.getCart(CartProvider.userId);
   }
 
   @override

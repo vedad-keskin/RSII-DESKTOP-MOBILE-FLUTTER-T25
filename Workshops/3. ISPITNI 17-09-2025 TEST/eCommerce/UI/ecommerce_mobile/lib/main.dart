@@ -140,6 +140,13 @@ class LoginPage extends StatelessWidget {
                     if (_usernameController.text == "") {}
                     try {
                       await provider.get();
+
+
+                      CartProvider cartProvider = new CartProvider();
+                      CartProvider.userId = await cartProvider.getUserId(AuthProvider.username!);
+
+                      print("User ID: ${CartProvider.userId}");
+
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => ProductList()));
                     } on Exception catch (e) {

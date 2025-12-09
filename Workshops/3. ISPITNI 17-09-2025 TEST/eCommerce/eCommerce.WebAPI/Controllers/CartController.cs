@@ -25,6 +25,12 @@ namespace eCommerce.WebAPI.Controllers
             return await _cartService.GetAsync(userId);
         }
 
-    
+        [HttpGet("{username}/me")]
+        public async Task<int> GetUserIdAsync(string username)
+        {
+            return await _cartService.GetUserIdAsync(username);
+        }
+
+
     }
 } 

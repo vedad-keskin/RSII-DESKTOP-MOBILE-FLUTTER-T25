@@ -10,7 +10,7 @@ namespace eCommerce.Services
     public interface ICartService
     {
         Task<CartResponse> GetAsync(int userId);
-        //Task<UserResponse?> GetByIdAsync(int id);
+        Task<int> GetUserIdAsync (string username);
         //Task<UserResponse> CreateAsync(UserUpsertRequest request);
         //Task<UserResponse?> UpdateAsync(int id, UserUpsertRequest request);
         //Task<bool> DeleteAsync(int id);

@@ -47,5 +47,14 @@ namespace eCommerce.Services
             };
 
         }
+
+        public async Task<int> GetUserIdAsync(string username)
+        {
+            var loggedInUser = await _context.Users.Where(x => x.Username == username).FirstOrDefaultAsync();
+
+
+            return loggedInUser?.Id ?? 2;
+
+        }
     }
 } 
