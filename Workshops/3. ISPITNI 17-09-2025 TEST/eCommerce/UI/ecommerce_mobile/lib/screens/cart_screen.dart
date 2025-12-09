@@ -1,6 +1,6 @@
 import 'package:ecommerce_mobile/layouts/master_screen.dart';
+import 'package:ecommerce_mobile/model/cart_item.dart';
 import 'package:ecommerce_mobile/model/cart_provider.dart';
-import 'package:ecommerce_mobile/model/cart.dart';
 import 'package:ecommerce_mobile/providers/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +19,11 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     super.initState();
     cartProvider = context.read<CartProvider>();
+    _loadCart();
+  }
+
+  Future<void> _loadCart() async {
+    await cartProvider.getCart(2);
   }
 
   @override

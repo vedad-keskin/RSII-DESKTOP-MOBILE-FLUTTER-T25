@@ -36,11 +36,11 @@ class CartProvider with ChangeNotifier {
       
       if (response.statusCode < 299) {
         var data = jsonDecode(response.body);
-        cart.items = (data['cartItems'] as List?)
+        cart.items = (data['items'] as List?)
             ?.map((e) => CartItem(
                   Product.fromJson(e['product']),
-                  e['quantity'] ?? 1,
-                  id: e['id'] ?? 0,
+                  e['count'] ?? 1,
+                  id: 0,
                 ))
             .toList() ?? [];
         notifyListeners();

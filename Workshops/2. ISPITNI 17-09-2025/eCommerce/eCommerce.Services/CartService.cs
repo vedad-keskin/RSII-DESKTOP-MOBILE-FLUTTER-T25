@@ -22,24 +22,26 @@ namespace eCommerce.Services
 
         public async Task<CartResponse> GetCartAsync(int userId)
         {
-            var cart = await _context.Carts
-                .Include(c => c.CartItems)
-                    .ThenInclude(ci => ci.Product)
-                        .ThenInclude(p => p.Assets)
-                .FirstOrDefaultAsync(c => c.UserId == userId);
+            var cartResponse = await _context.Carts
+                .Include(x => x.CartItems)
+                .ThenInclude(x => x.Product)
+                .ThenInclude(x => x.Assets)
+                .Where(x => x.UserId == userId)
+                .FirstOrDefaultAsync();
 
-            if (cart == null)
+            if (cartResponse == null)
             {
-                cart = new Cart
-                {
-                    UserId = userId,
-                    CreatedAt = DateTime.UtcNow
-                };
-                _context.Carts.Add(cart);
-                await _context.SaveChangesAsync();
+                return new CartResponse { Items = new List<CartItemResponse>() };
             }
 
-            return MapToResponse(cart);
+            return new CartResponse
+            {
+                Items = cartResponse.CartItems.Select(item => new CartItemResponse
+                {
+                    Product = _mapper.Map<ProductResponse>(item.Product),
+                    Count = item.Quantity
+                }).ToList()
+            };
         }
 
         public async Task<CartItemResponse> AddItemAsync(int userId, CartItemInsertRequest request)
@@ -75,7 +77,11 @@ namespace eCommerce.Services
                     .ThenInclude(p => p.Assets)
                 .FirstOrDefaultAsync(ci => ci.Id == existingItem.Id);
 
-            return MapItemToResponse(cartItem!);
+            return new CartItemResponse
+            {
+                Product = _mapper.Map<ProductResponse>(cartItem!.Product),
+                Count = cartItem.Quantity
+            };
         }
 
         public async Task<CartItemResponse?> UpdateItemAsync(int userId, int itemId, CartItemUpdateRequest request)
@@ -94,7 +100,11 @@ namespace eCommerce.Services
             cart.UpdatedAt = DateTime.UtcNow;
             
             await _context.SaveChangesAsync();
-            return MapItemToResponse(item);
+            return new CartItemResponse
+            {
+                Product = _mapper.Map<ProductResponse>(item.Product),
+                Count = item.Quantity
+            };
         }
 
         public async Task<bool> RemoveItemAsync(int userId, int itemId)
@@ -141,25 +151,12 @@ namespace eCommerce.Services
             return cart;
         }
 
-        private CartResponse MapToResponse(Cart cart)
-        {
-            return new CartResponse
-            {
-                Id = cart.Id,
-                UserId = cart.UserId,
-                CreatedAt = cart.CreatedAt,
-                CartItems = cart.CartItems.Select(MapItemToResponse).ToList()
-            };
-        }
-
         private CartItemResponse MapItemToResponse(CartItem item)
         {
             return new CartItemResponse
             {
-                Id = item.Id,
-                Quantity = item.Quantity,
-                AddedAt = item.AddedAt,
-                Product = _mapper.Map<ProductResponse>(item.Product)
+                Product = _mapper.Map<ProductResponse>(item.Product),
+                Count = item.Quantity
             };
         }
     }
