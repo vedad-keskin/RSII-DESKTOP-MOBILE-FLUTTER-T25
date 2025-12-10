@@ -31,6 +31,10 @@ namespace eCommerce.WebAPI.Controllers
             return await _cartService.GetUserIdAsync(username);
         }
 
-
+        [HttpPost("{userId}/{productId}")]
+        public async Task<ActionResult<bool>> AddItemAsync(int userId, int productId)
+        {
+            return await _cartService.AddItemAsync(userId, productId);
+        }
     }
 } 

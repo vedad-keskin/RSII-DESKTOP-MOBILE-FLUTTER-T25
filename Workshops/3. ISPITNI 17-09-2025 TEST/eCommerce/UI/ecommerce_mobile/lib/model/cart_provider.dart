@@ -1,6 +1,7 @@
 import 'package:ecommerce_mobile/model/cart.dart';
 import 'package:ecommerce_mobile/model/cart_item.dart';
 import 'package:ecommerce_mobile/model/product.dart';
+import 'package:ecommerce_mobile/providers/auth_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:collection/collection.dart';
 
@@ -61,14 +62,17 @@ class CartProvider with ChangeNotifier {
 
 
 
-  addToCart(Product product) {
-    if (findInCart(product) != null) {
-      findInCart(product)?.count++;
-    } else {
-      cart.items.add(CartItem(product, 1));
-    }
-    
-    notifyListeners();
+  Future<void> addToCart(int productId) async {
+   
+    final url = "$_baseUrl/$userId/$productId";
+    final uri = Uri.parse(url);
+
+
+    await http.post(uri);
+     
+
+      notifyListeners();
+
   }
 
   removeFromCart(Product product) {
