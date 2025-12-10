@@ -76,6 +76,37 @@ namespace eCommerce.Services
 
         }
 
+
+        public async Task<bool> RemoveItemAsync(int userId, int productId)
+        {
+            var cart = await _context.Carts
+                 .Include(x => x.CartItems)
+                 .Where(x => x.UserId == userId)
+                 .FirstOrDefaultAsync();
+
+            if (cart == null)
+            {
+                throw new KeyNotFoundException("Cart not found.");
+            }
+
+            var exisitingProduct = cart.CartItems.FirstOrDefault(x => x.ProductId == productId);
+
+            if (exisitingProduct != null)
+            {
+                _context.CartItems.Remove(exisitingProduct);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new KeyNotFoundException("Cart Item not found.");
+            }
+
+
+            return true;
+
+        }
+
+
         public async Task<CartResponse> GetAsync(int userId)
         {
 
@@ -126,5 +157,6 @@ namespace eCommerce.Services
             return loggedInUser.Id;
 
         }
+
     }
 } 

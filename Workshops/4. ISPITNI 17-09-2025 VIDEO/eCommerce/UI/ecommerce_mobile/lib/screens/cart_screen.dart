@@ -157,8 +157,9 @@ class _CartScreenState extends State<CartScreen> {
                 ),
                 SizedBox(height: 8),
                 IconButton(
-                  onPressed: () {
-                    cartProvider.removeFromCart(item.product);
+                  onPressed: () async {
+                    await cartProvider.removeItemAsync(item.product.id);
+                    _loadCart();
                   },
                   icon: Icon(Icons.delete, color: Colors.red),
                 ),

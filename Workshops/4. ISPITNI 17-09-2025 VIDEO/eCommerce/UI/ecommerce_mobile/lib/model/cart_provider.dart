@@ -82,22 +82,32 @@ class CartProvider with ChangeNotifier {
   }
 
 
+  Future<void> removeItemAsync(int productId) async
+  
+   {
+     var url = "$_baseUrl/$userId/$productId"; // https://localhost:7093/api/Cart/2/8
 
 
+    var uri = Uri.parse(url);
 
 
+    await http.delete(uri);
 
 
-
-
-
-
-
-
-  removeFromCart(Product product) {
-    cart.items.removeWhere((item) => item.product.id == product.id);
     notifyListeners();
   }
+
+
+
+
+
+
+
+
+
+
+
+
 
   CartItem? findInCart(Product product) {
     CartItem? item = cart.items.firstWhereOrNull((item) => item.product.id == product.id);
