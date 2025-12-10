@@ -90,5 +90,28 @@ namespace eCommerce.Services
 
             return true;
         }
+
+        public async Task<bool> RemoveItemAsync(int userId, int productId)
+        {
+            var cart = await _context.Carts
+                .Include(x => x.CartItems)
+                .Where(x => x.UserId == userId)
+                .FirstOrDefaultAsync();
+
+            if (cart == null){
+                return false;
+            }
+
+            var item = cart.CartItems.FirstOrDefault(x => x.ProductId == productId);
+            if (item != null)
+            {
+                _context.CartItems.Remove(item);
+                await _context.SaveChangesAsync();
+            }else{
+                return false;
+            }
+
+            return true;
+        }
     }
 } 

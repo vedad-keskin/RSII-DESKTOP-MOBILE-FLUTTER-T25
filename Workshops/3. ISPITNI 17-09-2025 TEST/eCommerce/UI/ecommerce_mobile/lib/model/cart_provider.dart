@@ -1,7 +1,6 @@
 import 'package:ecommerce_mobile/model/cart.dart';
 import 'package:ecommerce_mobile/model/cart_item.dart';
 import 'package:ecommerce_mobile/model/product.dart';
-import 'package:ecommerce_mobile/providers/auth_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:collection/collection.dart';
 
@@ -75,8 +74,12 @@ class CartProvider with ChangeNotifier {
 
   }
 
-  removeFromCart(Product product) {
-    cart.items.removeWhere((item) => item.product.id == product.id);
+  Future<void> removeFromCart(int productId) async {
+    final url = "$_baseUrl/$userId/$productId";
+    final uri = Uri.parse(url);
+
+    await http.delete(uri);
+    
     notifyListeners();
   }
 

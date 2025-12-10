@@ -12,5 +12,6 @@ namespace eCommerce.Services
         Task<CartResponse> GetAsync(int userId);
         Task<int> GetUserIdAsync (string username);
         Task<bool> AddItemAsync(int userId, int productId);
+        Task<bool> RemoveItemAsync(int userId, int productId);
     }
 } 
