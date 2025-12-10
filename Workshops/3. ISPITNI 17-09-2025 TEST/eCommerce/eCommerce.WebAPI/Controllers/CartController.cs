@@ -42,5 +42,11 @@ namespace eCommerce.WebAPI.Controllers
         {
             return await _cartService.RemoveItemAsync(userId, productId);
         }
+
+        [HttpDelete("{userId}")]
+        public async Task<ActionResult<bool>> ClearCartAsync(int userId)
+        {
+            return await _cartService.ClearCartAsync(userId);
+        }
     }
 } 

@@ -83,6 +83,16 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> clearCart() async {
+    final url = "$_baseUrl/$userId";
+    final uri = Uri.parse(url);
+
+    await http.delete(uri);
+    
+    cart = Cart();
+    notifyListeners();
+  }
+
   CartItem? findInCart(Product product) {
     CartItem? item = cart.items.firstWhereOrNull((item) => item.product.id == product.id);
     return item;

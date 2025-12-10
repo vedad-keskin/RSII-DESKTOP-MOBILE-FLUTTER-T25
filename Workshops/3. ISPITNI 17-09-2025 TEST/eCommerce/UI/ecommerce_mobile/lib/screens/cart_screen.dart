@@ -57,6 +57,17 @@ class _CartScreenState extends State<CartScreen> {
             "Cart Items (${cartProvider.cart.items.length})",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
+          Spacer(),
+          if (cartProvider.cart.items.isNotEmpty)
+            TextButton(
+              onPressed: () async {
+                await cartProvider.clearCart();
+              },
+              child: Text(
+                "Clear Cart",
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
         ],
       ),
     );

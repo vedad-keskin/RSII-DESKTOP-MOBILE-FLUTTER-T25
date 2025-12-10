@@ -34,17 +34,26 @@ namespace eCommerce.Services
                 .Where(x=> x.UserId == userId)
                 .FirstOrDefaultAsync();
 
-            return new CartResponse
+            if(cartResponse != null)
             {
-                Id = cartResponse!.Id,
-                UserId = cartResponse.UserId,
-                Items = cartResponse!.CartItems
-                .Select(item => new CartItemResponse
+
+                return new CartResponse
                 {
-                    Product = _mapper.Map<ProductResponse>(item.Product),
-                    Count = item.Quantity
-                }).ToList()
-            };
+                    Id = cartResponse!.Id,
+                    UserId = cartResponse.UserId,
+                    Items = cartResponse!.CartItems
+                    .Select(item => new CartItemResponse
+                    {
+                        Product = _mapper.Map<ProductResponse>(item.Product),
+                        Count = item.Quantity
+                    }).ToList()
+                };
+
+            }else
+            {
+                return new CartResponse();
+            }
+
 
         }
 
@@ -109,6 +118,22 @@ namespace eCommerce.Services
                 await _context.SaveChangesAsync();
             }else{
                 return false;
+            }
+
+            return true;
+        }
+
+        public async Task<bool> ClearCartAsync(int userId)
+        {
+            var cart = await _context.Carts
+                .Include(x => x.CartItems)
+                .Where(x => x.UserId == userId)
+                .FirstOrDefaultAsync();
+
+            if (cart != null)
+            {
+                _context.Carts.Remove(cart);
+                await _context.SaveChangesAsync();
             }
 
             return true;
