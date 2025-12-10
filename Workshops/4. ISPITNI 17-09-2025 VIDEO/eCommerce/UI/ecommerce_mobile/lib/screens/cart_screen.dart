@@ -1,4 +1,5 @@
 import 'package:ecommerce_mobile/layouts/master_screen.dart';
+import 'package:ecommerce_mobile/model/cart_item.dart';
 import 'package:ecommerce_mobile/model/cart_provider.dart';
 import 'package:ecommerce_mobile/model/cart.dart';
 import 'package:ecommerce_mobile/providers/utils.dart';
@@ -19,7 +20,13 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     super.initState();
     cartProvider = context.read<CartProvider>();
+    _loadCart();
   }
+
+    void _loadCart() async {
+       await cartProvider.getAsync(CartProvider.userId);
+
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -225,4 +232,6 @@ class _CartScreenState extends State<CartScreen> {
       ),
     );
   }
+  
+
 }
