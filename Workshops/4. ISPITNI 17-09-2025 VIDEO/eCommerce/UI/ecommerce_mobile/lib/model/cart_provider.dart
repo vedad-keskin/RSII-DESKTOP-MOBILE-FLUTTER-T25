@@ -66,28 +66,33 @@ class CartProvider with ChangeNotifier {
   }
 
 
+   Future<void> addItemAsync(int productId) async {
+  
+    var url = "$_baseUrl/$userId/$productId"; // https://localhost:7093/api/Cart/2/8
 
 
+    var uri = Uri.parse(url);
 
 
+    await http.post(uri);
 
 
-
-
-
-
-
-
-
-  addToCart(Product product) {
-    if (findInCart(product) != null) {
-      findInCart(product)?.count++;
-    } else {
-      cart.items.add(CartItem(product, 1));
-    }
     
     notifyListeners();
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   removeFromCart(Product product) {
     cart.items.removeWhere((item) => item.product.id == product.id);

@@ -23,6 +23,59 @@ namespace eCommerce.Services
             _mapper = mapper;
         }
 
+        public async Task<bool> AddItemAsync(int userId, int productId)
+        {
+
+            var cart = await _context.Carts
+                .Include(x => x.CartItems)
+                .Where(x => x.UserId == userId)
+                .FirstOrDefaultAsync();
+
+
+            // ako korisnik prvi put dodaje produkt bez da ima cart kreiran
+
+            if(cart == null)
+            {
+                cart = new Cart()
+                {
+                    UserId = userId,
+                };
+
+                _context.Carts.Add(cart);
+                await _context.SaveChangesAsync();
+
+            }
+
+            cart.UpdatedAt = DateTime.Now;
+
+            var exisitingProduct = cart.CartItems.FirstOrDefault(x => x.ProductId == productId);
+
+            if(exisitingProduct != null)
+            {
+
+                exisitingProduct.Quantity += 1;
+                exisitingProduct.UpdatedAt = DateTime.Now;
+
+            }
+            else
+            {
+
+                cart.CartItems.Add(new CartItem
+                {
+
+                    ProductId = productId,
+                    Quantity = 1,
+                    AddedAt = DateTime.Now,
+
+                });
+            }
+
+            await _context.SaveChangesAsync();
+
+            return true;
+
+        }
+
         public async Task<CartResponse> GetAsync(int userId)
         {
 

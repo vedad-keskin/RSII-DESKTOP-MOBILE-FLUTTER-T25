@@ -11,10 +11,12 @@ namespace eCommerce.Services
     {
         Task<CartResponse> GetAsync(int userId);
         Task<int> GetUserIdAsync(string username);
+        Task<bool> AddItemAsync(int userId, int productId);
+
+
         //Task<UserResponse?> GetByIdAsync(int id);
         //Task<UserResponse> CreateAsync(UserUpsertRequest request);
         //Task<UserResponse?> UpdateAsync(int id, UserUpsertRequest request);
-        //Task<bool> DeleteAsync(int id);
         //Task<UserResponse?> AuthenticateAsync(UserLoginRequest request);
     }
 } 
