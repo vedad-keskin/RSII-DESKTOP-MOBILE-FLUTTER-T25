@@ -22,19 +22,30 @@ class CartProvider with ChangeNotifier {
   }
 
    Future<Cart> getCart(int userId) async {
-    final url = "$_baseUrl/$userId";   // <-- IMPORTANT
+    try {
+      final url = "$_baseUrl/$userId";   // <-- IMPORTANT
 
       final uri = Uri.parse(url);
 
+      final response = await http.get(uri);
 
-    final response = await http.get(uri);
-
+      if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         cart = Cart.fromJson(data);   // <-- Update the cart property
         notifyListeners();  // <-- Notify listeners to update UI
         return cart;
-     
-   
+      } else {
+        // Cart not found or other error - return empty cart
+        cart = Cart();
+        notifyListeners();
+        return cart;
+      }
+    } catch (e) {
+      // Handle any exceptions (network errors, parsing errors, etc.)
+      cart = Cart();
+      notifyListeners();
+      return cart;
+    }
   }
 
 

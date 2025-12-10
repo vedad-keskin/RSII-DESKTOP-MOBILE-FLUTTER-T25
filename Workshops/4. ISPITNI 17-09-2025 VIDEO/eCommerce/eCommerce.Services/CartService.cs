@@ -119,7 +119,8 @@ namespace eCommerce.Services
 
             if (cartResponse == null)
             {
-                throw new KeyNotFoundException("Cart not found.");
+                //throw new KeyNotFoundException("Cart not found.");
+                return new CartResponse();
             }
 
 
@@ -158,5 +159,27 @@ namespace eCommerce.Services
 
         }
 
+        public async Task<bool> ClearCartAysnc(int userId)
+        {
+            var cart = await _context.Carts
+                    .Include(x => x.CartItems)
+                    .Where(x => x.UserId == userId)
+                    .FirstOrDefaultAsync();
+
+            if (cart == null)
+            {
+                throw new KeyNotFoundException("Cart not found.");
+            }
+            else
+            {
+
+                _context.Carts.Remove(cart);
+                await _context.SaveChangesAsync();
+
+            }
+
+            return true;
+
+        }
     }
 } 

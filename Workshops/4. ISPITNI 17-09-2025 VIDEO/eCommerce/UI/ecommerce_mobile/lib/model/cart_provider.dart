@@ -22,8 +22,8 @@ class CartProvider with ChangeNotifier {
 
   Future<Cart> getAsync(int userId) async {
 
-
-    var url = "$_baseUrl/$userId"; // https://localhost:7093/api/Cart/2
+  //  try{
+  var url = "$_baseUrl/$userId"; // https://localhost:7093/api/Cart/2
 
 
     var uri = Uri.parse(url);
@@ -32,6 +32,7 @@ class CartProvider with ChangeNotifier {
   
 
     var response = await http.get(uri);
+    
 
       var data = jsonDecode(response.body);
   
@@ -40,6 +41,22 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
 
       return cart;
+
+  //  }catch(e){
+
+
+  //   cart = Cart();
+
+  //   notifyListeners();
+
+  //   return cart;
+
+  //  }
+
+  
+
+
+
 
  
   }
@@ -93,6 +110,21 @@ class CartProvider with ChangeNotifier {
 
     await http.delete(uri);
 
+
+    notifyListeners();
+  }
+
+    Future<void> clearCartAysnc() async{
+
+     var url = "$_baseUrl/$userId"; // https://localhost:7093/api/Cart/2
+
+
+    var uri = Uri.parse(url);
+
+
+    await http.delete(uri);
+
+    cart = Cart();
 
     notifyListeners();
   }

@@ -13,6 +13,7 @@ namespace eCommerce.Services
         Task<int> GetUserIdAsync(string username);
         Task<bool> AddItemAsync(int userId, int productId);
         Task<bool> RemoveItemAsync(int userId, int productId);
+        Task<bool> ClearCartAysnc(int userId);
 
 
         //Task<UserResponse?> GetByIdAsync(int id);
