@@ -121,6 +121,19 @@ namespace eCommerce.Services.Database
                 .HasForeignKey(ci => ci.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // Configure CartEventIB180079 relationships - NoAction, manually set null before delete
+            modelBuilder.Entity<CartEventIB180079>()
+                .HasOne(e => e.Cart)
+                .WithMany()
+                .HasForeignKey(e => e.CartId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<CartEventIB180079>()
+                .HasOne(e => e.CartItem)
+                .WithMany()
+                .HasForeignKey(e => e.CartItemId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             // Configure Product-OrderItem relationship
             modelBuilder.Entity<Product>()
                 .HasMany(p => p.OrderItems)
