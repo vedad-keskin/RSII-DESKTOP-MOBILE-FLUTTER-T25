@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
@@ -86,7 +87,8 @@ namespace eCommerce.Services
 
             if (cart == null)
             {
-                throw new KeyNotFoundException("Cart not found.");
+                //throw new KeyNotFoundException("Cart not found.");
+                return false;
             }
 
             var exisitingProduct = cart.CartItems.FirstOrDefault(x => x.ProductId == productId);
@@ -98,7 +100,8 @@ namespace eCommerce.Services
             }
             else
             {
-                throw new KeyNotFoundException("Cart Item not found.");
+                //throw new KeyNotFoundException("Cart Item not found.");
+                return false;
             }
 
 
@@ -150,7 +153,8 @@ namespace eCommerce.Services
 
             if (loggedInUser == null)
             {
-                throw new KeyNotFoundException("User not found.");
+                //throw new KeyNotFoundException("User not found.");
+                return 2;
             }
 
 
@@ -168,7 +172,8 @@ namespace eCommerce.Services
 
             if (cart == null)
             {
-                throw new KeyNotFoundException("Cart not found.");
+                //throw new KeyNotFoundException("Cart not found.");
+                return false;
             }
             else
             {
@@ -180,6 +185,11 @@ namespace eCommerce.Services
 
             return true;
 
+        }
+
+        public async Task<bool> CheckoutAysnc(int userId)
+        {
+            return await ClearCartAysnc(userId);
         }
     }
 } 

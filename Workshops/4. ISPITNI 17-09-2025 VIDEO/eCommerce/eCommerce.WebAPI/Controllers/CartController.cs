@@ -49,5 +49,11 @@ namespace eCommerce.WebAPI.Controllers
             return await _cartService.ClearCartAysnc(userId);
         }
 
+        [HttpPost("{userId}/checkout")]
+        public async Task<bool> CheckoutAysnc(int userId)
+        {
+            return await _cartService.CheckoutAysnc(userId);
+        }
+
     }
 } 

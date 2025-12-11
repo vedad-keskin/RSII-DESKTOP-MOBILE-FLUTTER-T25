@@ -14,11 +14,7 @@ namespace eCommerce.Services
         Task<bool> AddItemAsync(int userId, int productId);
         Task<bool> RemoveItemAsync(int userId, int productId);
         Task<bool> ClearCartAysnc(int userId);
+        Task<bool> CheckoutAysnc(int userId);
 
-
-        //Task<UserResponse?> GetByIdAsync(int id);
-        //Task<UserResponse> CreateAsync(UserUpsertRequest request);
-        //Task<UserResponse?> UpdateAsync(int id, UserUpsertRequest request);
-        //Task<UserResponse?> AuthenticateAsync(UserLoginRequest request);
     }
 } 

@@ -22,43 +22,22 @@ class CartProvider with ChangeNotifier {
 
   Future<Cart> getAsync(int userId) async {
 
-  //  try{
-  var url = "$_baseUrl/$userId"; // https://localhost:7093/api/Cart/2
+    var url = "$_baseUrl/$userId"; // https://localhost:7093/api/Cart/2
 
 
     var uri = Uri.parse(url);
 
-
-  
-
     var response = await http.get(uri);
     
 
-      var data = jsonDecode(response.body);
+    var data = jsonDecode(response.body);
   
-      cart = Cart.fromJson(data);
+    cart = Cart.fromJson(data);
        
     notifyListeners();
 
-      return cart;
+    return cart;
 
-  //  }catch(e){
-
-
-  //   cart = Cart();
-
-  //   notifyListeners();
-
-  //   return cart;
-
-  //  }
-
-  
-
-
-
-
- 
   }
 
     Future<int> getUserIdAsync(String username) async {
@@ -129,20 +108,23 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
+    Future<void> checkoutAysnc() async{
+
+     var url = "$_baseUrl/$userId/checkout"; // https://localhost:7093/api/Cart/2
 
 
+    var uri = Uri.parse(url);
 
 
+    await http.post(uri);
 
+    cart = Cart();
 
-
-
-
-
-
-
-  CartItem? findInCart(Product product) {
-    CartItem? item = cart.items.firstWhereOrNull((item) => item.product.id == product.id);
-    return item;
+    notifyListeners();
   }
+
+
+
+
+
 }
