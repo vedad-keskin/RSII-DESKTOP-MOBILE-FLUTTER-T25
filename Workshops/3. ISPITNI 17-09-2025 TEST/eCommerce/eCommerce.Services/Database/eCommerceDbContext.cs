@@ -20,6 +20,7 @@ namespace eCommerce.Services.Database
         public DbSet<ProductReview> ProductReviews { get; set; }
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<CartEventIB180079> CartEventsIB180079 { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<UnitOfMeasure> UnitsOfMeasure { get; set; }
 
@@ -181,20 +182,20 @@ namespace eCommerce.Services.Database
 
 
             modelBuilder.Entity<Category>().HasData(
-           new Category { Id = 1, Name = "Elektronika", Description = "Elektronski ureðaji", IsActive = true, CreatedAt = DateTime.UtcNow },
+           new Category { Id = 1, Name = "Elektronika", Description = "Elektronski ureï¿½aji", IsActive = true, CreatedAt = DateTime.UtcNow },
            new Category { Id = 2, Name = "Knjige", Description = "Knjige i literatura", IsActive = true, CreatedAt = DateTime.UtcNow },
            new Category { Id = 3, Name = "Pametni telefoni", Description = "Mobilni telefoni", ParentCategoryId = 1, IsActive = true, CreatedAt = DateTime.UtcNow },
-           new Category { Id = 4, Name = "Raèunari", Description = "Laptopi i desktop raèunari", ParentCategoryId = 1, IsActive = true, CreatedAt = DateTime.UtcNow }
+           new Category { Id = 4, Name = "Raï¿½unari", Description = "Laptopi i desktop raï¿½unari", ParentCategoryId = 1, IsActive = true, CreatedAt = DateTime.UtcNow }
        );
 
             modelBuilder.Entity<ProductType>().HasData(
-       new ProductType { Id = 1, Name = "Fizièki", Description = "Fizièka roba", IsActive = true, CreatedAt = DateTime.UtcNow },
+       new ProductType { Id = 1, Name = "Fiziï¿½ki", Description = "Fiziï¿½ka roba", IsActive = true, CreatedAt = DateTime.UtcNow },
        new ProductType { Id = 2, Name = "Digitalni", Description = "Digitalna roba", IsActive = true, CreatedAt = DateTime.UtcNow }
    );
 
             modelBuilder.Entity<UnitOfMeasure>().HasData(
         new UnitOfMeasure { Id = 1, Name = "Komad", Abbreviation = "kom", Description = "Jedna stavka", IsActive = true, CreatedAt = DateTime.UtcNow },
-        new UnitOfMeasure { Id = 2, Name = "Kilogram", Abbreviation = "kg", Description = "Težina u kilogramima", IsActive = true, CreatedAt = DateTime.UtcNow }
+        new UnitOfMeasure { Id = 2, Name = "Kilogram", Abbreviation = "kg", Description = "Teï¿½ina u kilogramima", IsActive = true, CreatedAt = DateTime.UtcNow }
     );
 
             modelBuilder.Entity<Role>().HasData(
@@ -213,11 +214,11 @@ namespace eCommerce.Services.Database
            new Product { Id = 2, Name = "Samsung Galaxy S23", Description = "Vrhunski Samsung telefon.", Price = 899.99m, StockQuantity = 40, IsActive = true, CreatedAt = DateTime.UtcNow, SKU = "SMS-S23", Weight = 0.168m, ProductTypeId = 1, UnitOfMeasureId = 1, ProductState = "Novo" },
            new Product { Id = 3, Name = "Google Pixel 8", Description = "Najnoviji Google pametni telefon.", Price = 799.99m, StockQuantity = 30, IsActive = true, CreatedAt = DateTime.UtcNow, SKU = "GGL-PX8", Weight = 0.162m, ProductTypeId = 1, UnitOfMeasureId = 1, ProductState = "Novo" },
            new Product { Id = 4, Name = "Dell XPS 13", Description = "Premium ultrabook laptop.", Price = 1299.99m, StockQuantity = 20, IsActive = true, CreatedAt = DateTime.UtcNow, SKU = "DLL-XPS13", Weight = 1.2m, ProductTypeId = 1, UnitOfMeasureId = 1, ProductState = "Novo" },
-           new Product { Id = 5, Name = "Sony WH-1000XM5", Description = "Slušalice sa poništavanjem buke.", Price = 349.99m, StockQuantity = 60, IsActive = true, CreatedAt = DateTime.UtcNow, SKU = "SNY-WH1000XM5", Weight = 0.25m, ProductTypeId = 1, UnitOfMeasureId = 1, ProductState = "Novo" },
+           new Product { Id = 5, Name = "Sony WH-1000XM5", Description = "Sluï¿½alice sa poniï¿½tavanjem buke.", Price = 349.99m, StockQuantity = 60, IsActive = true, CreatedAt = DateTime.UtcNow, SKU = "SNY-WH1000XM5", Weight = 0.25m, ProductTypeId = 1, UnitOfMeasureId = 1, ProductState = "Novo" },
            new Product { Id = 6, Name = "Apple Watch Series 9", Description = "Pametni sat od Apple-a.", Price = 399.99m, StockQuantity = 35, IsActive = true, CreatedAt = DateTime.UtcNow, SKU = "APL-WATCH9", Weight = 0.045m, ProductTypeId = 1, UnitOfMeasureId = 1, ProductState = "Novo" },
-           new Product { Id = 7, Name = "Kindle Paperwhite", Description = "Ureðaj za èitanje e-knjiga.", Price = 129.99m, StockQuantity = 80, IsActive = true, CreatedAt = DateTime.UtcNow, SKU = "AMZ-KNDLPW", Weight = 0.182m, ProductTypeId = 1, UnitOfMeasureId = 1, ProductState = "Novo" },
-           new Product { Id = 8, Name = "Knjiga: Programiranje u C#", Description = "Nauèite C# uz ovaj sveobuhvatni vodiè.", Price = 49.99m, StockQuantity = 100, IsActive = true, CreatedAt = DateTime.UtcNow, SKU = "BOOK-CSHARP", Weight = 0.8m, ProductTypeId = 1, UnitOfMeasureId = 1, ProductState = "Novo" },
-           new Product { Id = 9, Name = "Logitech MX Master 3S", Description = "Napredni bežièni miš.", Price = 99.99m, StockQuantity = 70, IsActive = true, CreatedAt = DateTime.UtcNow, SKU = "LOG-MX3S", Weight = 0.141m, ProductTypeId = 1, UnitOfMeasureId = 1, ProductState = "Novo" },
+           new Product { Id = 7, Name = "Kindle Paperwhite", Description = "Ureï¿½aj za ï¿½itanje e-knjiga.", Price = 129.99m, StockQuantity = 80, IsActive = true, CreatedAt = DateTime.UtcNow, SKU = "AMZ-KNDLPW", Weight = 0.182m, ProductTypeId = 1, UnitOfMeasureId = 1, ProductState = "Novo" },
+           new Product { Id = 8, Name = "Knjiga: Programiranje u C#", Description = "Nauï¿½ite C# uz ovaj sveobuhvatni vodiï¿½.", Price = 49.99m, StockQuantity = 100, IsActive = true, CreatedAt = DateTime.UtcNow, SKU = "BOOK-CSHARP", Weight = 0.8m, ProductTypeId = 1, UnitOfMeasureId = 1, ProductState = "Novo" },
+           new Product { Id = 9, Name = "Logitech MX Master 3S", Description = "Napredni beï¿½iï¿½ni miï¿½.", Price = 99.99m, StockQuantity = 70, IsActive = true, CreatedAt = DateTime.UtcNow, SKU = "LOG-MX3S", Weight = 0.141m, ProductTypeId = 1, UnitOfMeasureId = 1, ProductState = "Novo" },
            new Product { Id = 10, Name = "HP LaserJet Pro M404dn", Description = "Monohromatski laserski printer.", Price = 249.99m, StockQuantity = 15, IsActive = true, CreatedAt = DateTime.UtcNow, SKU = "HP-LJ404DN", Weight = 8.56m, ProductTypeId = 1, UnitOfMeasureId = 1, ProductState = "Novo" }
        );
 
@@ -258,8 +259,8 @@ namespace eCommerce.Services.Database
             );
 
             modelBuilder.Entity<ProductReview>().HasData(
-        new ProductReview { Id = 1, Rating = 5, Comment = "Odlièan telefon!", CreatedAt = DateTime.UtcNow, UserId = 1, ProductId = 1, IsApproved = true },
-        new ProductReview { Id = 2, Rating = 4, Comment = "Odlièna knjiga za poèetnike.", CreatedAt = DateTime.UtcNow, UserId = 2, ProductId = 8, IsApproved = true }
+        new ProductReview { Id = 1, Rating = 5, Comment = "Odliï¿½an telefon!", CreatedAt = DateTime.UtcNow, UserId = 1, ProductId = 1, IsApproved = true },
+        new ProductReview { Id = 2, Rating = 4, Comment = "Odliï¿½na knjiga za poï¿½etnike.", CreatedAt = DateTime.UtcNow, UserId = 2, ProductId = 8, IsApproved = true }
     );
 
             modelBuilder.Entity<Cart>().HasData(
@@ -281,7 +282,7 @@ namespace eCommerce.Services.Database
             Status = OrderStatus.Processing,
             TotalAmount = 999.99m,
             UserId = 1,
-            ShippingAddress = "Maršala Tita 12",
+            ShippingAddress = "Marï¿½ala Tita 12",
             ShippingCity = "Sarajevo",
             ShippingState = "FBiH",
             ShippingZipCode = "71000",
@@ -311,6 +312,12 @@ namespace eCommerce.Services.Database
             modelBuilder.Entity<UserRole>().HasData(
                 new UserRole { Id = 1, UserId = 1, RoleId = 1, DateAssigned = DateTime.UtcNow },
                 new UserRole { Id = 2, UserId = 2, RoleId = 2, DateAssigned = DateTime.UtcNow }
+            );
+
+
+            modelBuilder.Entity<CartEventIB180079>().HasData(
+                 new CartEventIB180079 { Id = 1, CartId = 1, CartItemId = 1, UserId = 1, Type = "Added", CreatedAt = DateTime.Now, ProductId = 1, OldQuantity = 0, NewQuantity = 1 },
+                 new CartEventIB180079 { Id = 2, CartId = 1, CartItemId = 1, UserId = 1, Type = "Quantity Change", CreatedAt = DateTime.Now, ProductId = 1, OldQuantity = 1, NewQuantity = 2 }
             );
 
         }
