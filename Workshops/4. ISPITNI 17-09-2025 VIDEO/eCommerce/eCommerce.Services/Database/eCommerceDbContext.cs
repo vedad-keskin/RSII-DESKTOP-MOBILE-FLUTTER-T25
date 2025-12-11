@@ -22,6 +22,7 @@ namespace eCommerce.Services.Database
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<ProductType> ProductTypes { get; set; }
         public DbSet<UnitOfMeasure> UnitsOfMeasure { get; set; }
+        public DbSet<CartEventIB180079> CartEventIB180079 { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -312,6 +313,12 @@ namespace eCommerce.Services.Database
                 new UserRole { Id = 1, UserId = 1, RoleId = 1, DateAssigned = DateTime.UtcNow },
                 new UserRole { Id = 2, UserId = 2, RoleId = 2, DateAssigned = DateTime.UtcNow }
             );
+
+
+            modelBuilder.Entity<CartEventIB180079>().HasData(
+                new CartEventIB180079 { Id = 1, UserId = 1, CartId = 1, ProductId = 1, CartItemId = 1, Type = "Adding", OldQuantity = 0, NewQuantity = 1 },
+                new CartEventIB180079 { Id = 2, UserId = 1, CartId = 1, ProductId = 1, CartItemId = 1, Type = "Quantity Change", OldQuantity = 1, NewQuantity = 2 }
+                );
 
         }
     }
