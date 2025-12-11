@@ -181,6 +181,21 @@ namespace eCommerce.Services.Database
                 .IsUnique();
 
 
+            //modelBuilder.Entity<CartEventIB180079>()
+            //     .HasOne(e => e.Cart)
+            //     .WithMany()
+            //     .HasForeignKey(e => e.CartId)
+            //     .IsRequired(false)
+            //     .OnDelete(DeleteBehavior.NoAction);
+
+            //modelBuilder.Entity<CartEventIB180079>()
+            //    .HasOne(e => e.CartItem)
+            //    .WithMany()
+            //    .HasForeignKey(e => e.CartItemId)
+            //    .IsRequired(false)
+            //    .OnDelete(DeleteBehavior.NoAction);
+
+
             modelBuilder.Entity<Category>().HasData(
            new Category { Id = 1, Name = "Elektronika", Description = "Elektronski ureðaji", IsActive = true, CreatedAt = DateTime.UtcNow },
            new Category { Id = 2, Name = "Knjige", Description = "Knjige i literatura", IsActive = true, CreatedAt = DateTime.UtcNow },

@@ -51,27 +51,71 @@ namespace eCommerce.Services
 
             var exisitingProduct = cart.CartItems.FirstOrDefault(x => x.ProductId == productId);
 
-            if(exisitingProduct != null)
+            if(exisitingProduct != null) // ako povecavamo quantity
             {
 
                 exisitingProduct.Quantity += 1;
                 exisitingProduct.UpdatedAt = DateTime.Now;
 
+
+                await _context.SaveChangesAsync();
+
+
+
+                var noviCartEvent = new CartEventIB180079()
+                {
+                    CartId = cart.Id,
+                    CartItemId = exisitingProduct.Id,
+                    UserId = userId,
+                    ProductId = productId,
+                    Type = "Quantity Change",
+                    OldQuantity = exisitingProduct.Quantity - 1,
+                    NewQuantity = exisitingProduct.Quantity
+
+                };
+
+                _context.CartEventIB180079.Add(noviCartEvent);
+                await _context.SaveChangesAsync();
+
+
+
+
             }
-            else
+            else // dodavanje proizvoda
             {
 
-                cart.CartItems.Add(new CartItem
+                var noviCartItem = new CartItem
                 {
 
+                    CartId = cart.Id,
                     ProductId = productId,
                     Quantity = 1,
                     AddedAt = DateTime.Now,
 
-                });
+                };
+
+                _context.CartItems.Add(noviCartItem);
+                await _context.SaveChangesAsync();
+
+
+                var noviCartEvent = new CartEventIB180079()
+                {
+                    CartId = cart.Id,
+                    CartItemId = noviCartItem.Id,
+                    UserId = userId,
+                    ProductId = productId,
+                    Type = "Adding",
+                    OldQuantity = 0,
+                    NewQuantity = 1
+
+                };
+
+                _context.CartEventIB180079.Add(noviCartEvent);
+                await _context.SaveChangesAsync();
+
             }
 
-            await _context.SaveChangesAsync();
+
 
             return true;
 
@@ -95,6 +139,25 @@ namespace eCommerce.Services
 
             if (exisitingProduct != null)
             {
+
+                var noviCartEvent = new CartEventIB180079()
+                {
+                    CartId = null,
+                    CartItemId = null,
+                    UserId = userId,
+                    ProductId = productId,
+                    Type = "Removing",
+                    OldQuantity = exisitingProduct.Quantity,
+                    NewQuantity = 0
+
+                };
+
+                _context.CartEventIB180079.Add(noviCartEvent);
+                await _context.SaveChangesAsync();
+
+
+
+
                 _context.CartItems.Remove(exisitingProduct);
                 await _context.SaveChangesAsync();
             }
@@ -178,6 +241,32 @@ namespace eCommerce.Services
             else
             {
 
+                var tempCartItems = _context.CartItems.Where(x => x.CartId == cart.Id).ToList();
+
+                for (int i = 0; i < tempCartItems.Count(); i++)
+                {
+
+                    var noviCartEvent = new CartEventIB180079()
+                    {
+                        CartId = null,
+                        CartItemId = null,
+                        UserId = userId,
+                        ProductId = tempCartItems[i].ProductId,
+                        Type = "Clear Cart",
+                        OldQuantity = tempCartItems[i].Quantity,
+                        NewQuantity = 0
+
+                    };
+
+                    _context.CartEventIB180079.Add(noviCartEvent);
+                    await _context.SaveChangesAsync();
+
+
+                }
+
+
+
+
                 _context.Carts.Remove(cart);
                 await _context.SaveChangesAsync();
 
@@ -189,7 +278,51 @@ namespace eCommerce.Services
 
         public async Task<bool> CheckoutAysnc(int userId)
         {
-            return await ClearCartAysnc(userId);
+            var cart = await _context.Carts
+           .Include(x => x.CartItems)
+           .Where(x => x.UserId == userId)
+           .FirstOrDefaultAsync();
+
+            if (cart == null)
+            {
+                //throw new KeyNotFoundException("Cart not found.");
+                return false;
+            }
+            else
+            {
+
+                var tempCartItems = _context.CartItems.Where(x => x.CartId == cart.Id).ToList();
+
+                for (int i = 0; i < tempCartItems.Count(); i++)
+                {
+
+                    var noviCartEvent = new CartEventIB180079()
+                    {
+                        CartId = null,
+                        CartItemId = null,
+                        UserId = userId,
+                        ProductId = tempCartItems[i].ProductId,
+                        Type = "Checkout",
+                        OldQuantity = tempCartItems[i].Quantity,
+                        NewQuantity = 0
+
+                    };
+
+                    _context.CartEventIB180079.Add(noviCartEvent);
+                    await _context.SaveChangesAsync();
+
+
+                }
+
+
+
+
+                _context.Carts.Remove(cart);
+                await _context.SaveChangesAsync();
+
+            }
+
+            return true;
         }
     }
 } 

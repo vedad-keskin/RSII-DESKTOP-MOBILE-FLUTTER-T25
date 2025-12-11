@@ -15,13 +15,8 @@ namespace eCommerce.Services.Database
 
         public int? CartId { get; set; }
 
-        [ForeignKey("CartId")]
-        public Cart? Cart { get; set; }
-
         public int? CartItemId { get; set; }
 
-        [ForeignKey("CartItemId")]
-        public CartItem? CartItem { get; set; }
 
         public int? UserId { get; set; }
 
