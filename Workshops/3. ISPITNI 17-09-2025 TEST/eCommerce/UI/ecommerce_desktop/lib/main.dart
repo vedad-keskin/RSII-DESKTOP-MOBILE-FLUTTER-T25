@@ -28,7 +28,7 @@ class MyLoginApp extends StatelessWidget {
         colorScheme:
             ColorScheme.fromSeed(seedColor: Colors.blue, primary: Colors.red),
       ),
-      home: LoginScreen(),
+      home: const ProductList(),
     );
   }
 }

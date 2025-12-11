@@ -104,6 +104,16 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> checkout() async {
+    final url = "$_baseUrl/$userId/checkout";
+    final uri = Uri.parse(url);
+
+    await http.post(uri);
+    
+    cart = Cart();
+    notifyListeners();
+  }
+
   CartItem? findInCart(Product product) {
     CartItem? item = cart.items.firstWhereOrNull((item) => item.product.id == product.id);
     return item;

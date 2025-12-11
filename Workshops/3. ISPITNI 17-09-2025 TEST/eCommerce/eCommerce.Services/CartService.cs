@@ -138,5 +138,10 @@ namespace eCommerce.Services
 
             return true;
         }
+
+        public async Task<bool> CheckoutAsync(int userId)
+        {
+            return await ClearCartAsync(userId);
+        }
     }
 } 

@@ -14,5 +14,6 @@ namespace eCommerce.Services
         Task<bool> AddItemAsync(int userId, int productId);
         Task<bool> RemoveItemAsync(int userId, int productId);
         Task<bool> ClearCartAsync(int userId);
+        Task<bool> CheckoutAsync(int userId);
     }
 } 

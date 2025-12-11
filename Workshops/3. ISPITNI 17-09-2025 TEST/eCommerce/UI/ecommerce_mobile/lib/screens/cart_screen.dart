@@ -220,10 +220,10 @@ class _CartScreenState extends State<CartScreen> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {
-                // TODO: Implement checkout functionality
+              onPressed: () async {
+                await cartProvider.checkout();
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Checkout functionality not implemented yet")),
+                  SnackBar(content: Text("Order placed successfully!")),
                 );
               },
               style: ElevatedButton.styleFrom(
