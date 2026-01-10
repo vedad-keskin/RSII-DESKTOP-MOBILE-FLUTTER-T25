@@ -4,7 +4,10 @@ namespace eCommerce.Model.Responses
 {
     public class CartResponse
     {
-        public List<CartItemResponse> Items { get; set; } = new List<CartItemResponse>();
-    }
-}
 
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public List<CartItemResponse> Items { get; set; } = new List<CartItemResponse>();
+
+    }
+} 

@@ -1,16 +1,20 @@
-using eCommerce.Model.Requests;
-using eCommerce.Model.Responses;
+using eCommerce.Services.Database;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using eCommerce.Model.Responses;
+using eCommerce.Model.Requests;
+using eCommerce.Model.SearchObjects;
 
 namespace eCommerce.Services
 {
     public interface ICartService
     {
-        Task<CartResponse> GetCartAsync(int userId);
-        Task<CartItemResponse> AddItemAsync(int userId, CartItemInsertRequest request);
-        Task<CartItemResponse?> UpdateItemAsync(int userId, int itemId, CartItemUpdateRequest request);
-        Task<bool> RemoveItemAsync(int userId, int itemId);
-        Task<bool> ClearCartAsync(int userId);
-    }
-}
+        Task<CartResponse> GetAsync(int userId);
+        Task<int> GetUserIdAsync(string username);
+        Task<bool> AddItemAsync(int userId, int productId);
+        Task<bool> RemoveItemAsync(int userId, int productId);
+        Task<bool> ClearCartAysnc(int userId);
+        Task<bool> CheckoutAysnc(int userId);
 
+    }
+} 

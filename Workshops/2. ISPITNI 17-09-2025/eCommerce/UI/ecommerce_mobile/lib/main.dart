@@ -1,9 +1,11 @@
+import 'package:ecommerce_mobile/model/cart_event_provider.dart';
 import 'package:ecommerce_mobile/model/cart_provider.dart';
 import 'package:ecommerce_mobile/providers/auth_provider.dart';
 import 'package:ecommerce_mobile/providers/logged_product_provider.dart';
 import 'package:ecommerce_mobile/providers/product_provider.dart';
 import 'package:ecommerce_mobile/providers/product_type_provider.dart';
 import 'package:ecommerce_mobile/providers/unit_of_measure_provider.dart';
+import 'package:ecommerce_mobile/screens/frmCartEventsIB180079.dart';
 import 'package:ecommerce_mobile/screens/product_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,6 +19,7 @@ void main() {
     ChangeNotifierProvider<ProductTypeProvider>(
         create: (context) => ProductTypeProvider()),
     ChangeNotifierProvider<CartProvider>(create: (context) => CartProvider()),
+    ChangeNotifierProvider<CartEventProvider>(create: (context) => CartEventProvider()),
   ], child: const MyLoginApp()));
 }
 
@@ -140,6 +143,13 @@ class LoginPage extends StatelessWidget {
                     if (_usernameController.text == "") {}
                     try {
                       await provider.get();
+
+
+                       CartProvider cartProvider = new CartProvider();
+
+                       CartProvider.userId = await cartProvider.getUserIdAsync(AuthProvider.username!);
+
+
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => ProductList()));
                     } on Exception catch (e) {

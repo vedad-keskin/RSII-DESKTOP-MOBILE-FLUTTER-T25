@@ -1,94 +1,130 @@
 import 'dart:convert';
+
 import 'package:ecommerce_mobile/model/cart.dart';
+import 'package:ecommerce_mobile/model/cart_item.dart';
 import 'package:ecommerce_mobile/model/product.dart';
-import 'package:ecommerce_mobile/providers/auth_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:collection/collection.dart';
 import 'package:http/http.dart' as http;
 
 class CartProvider with ChangeNotifier {
   Cart cart = Cart();
+
+  static int userId = 0;
+
   static String? _baseUrl;
 
   CartProvider() {
+ 
     _baseUrl = const String.fromEnvironment("baseUrl",
-        defaultValue: "https://localhost:7093/api/");
+        defaultValue: "https://localhost:7093/api/Cart");
   }
 
-  Map<String, String> _createHeaders() {
-    String username = AuthProvider.username ?? "";
-    String password = AuthProvider.password ?? "";
+  Future<Cart> getAsync(int userId) async {
 
-    String basicAuth =
-        "Basic ${base64Encode(utf8.encode('$username:$password'))}";
+    var url = "$_baseUrl/$userId"; // https://localhost:7093/api/Cart/2
 
-    return {
-      "Content-Type": "application/json",
-      "Authorization": basicAuth
-    };
+
+    var uri = Uri.parse(url);
+
+    var response = await http.get(uri);
+    
+
+    var data = jsonDecode(response.body);
+  
+    cart = Cart.fromJson(data);
+       
+    notifyListeners();
+
+    return cart;
+
   }
 
-  Future<void> loadCart() async {
-    try {
-      var uri = Uri.parse("${_baseUrl}cart");
-      var headers = _createHeaders();
-      var response = await http.get(uri, headers: headers);
-      
-      if (response.statusCode < 299) {
-        var data = jsonDecode(response.body);
-        cart.items = (data['items'] as List?)
-            ?.map((e) => CartItem(
-                  Product.fromJson(e['product']),
-                  e['count'] ?? 1,
-                  id: 0,
-                ))
-            .toList() ?? [];
-        notifyListeners();
-      }
-    } catch (e) {
-      print("Error loading cart: $e");
-    }
+    Future<int> getUserIdAsync(String username) async {
+
+
+    var url = "$_baseUrl/$username/me"; // https://localhost:7093/api/Cart/2
+
+
+    var uri = Uri.parse(url);
+
+
+  
+
+    var response = await http.get(uri);
+
+    var data = jsonDecode(response.body);
+  
+       
+    return data;  
+
+ 
   }
 
-  Future<void> addToCart(Product product) async {
-    try {
-      var uri = Uri.parse("${_baseUrl}cart/items");
-      var headers = _createHeaders();
-      var body = jsonEncode({
-        'productId': product.id,
-        'quantity': 1,
-      });
-      
-      var response = await http.post(uri, headers: headers, body: body);
-      
-      if (response.statusCode < 299) {
-        await loadCart();
-      }
-    } catch (e) {
-      print("Error adding to cart: $e");
-    }
+
+   Future<void> addItemAsync(int productId) async {
+  
+    var url = "$_baseUrl/$userId/$productId"; // https://localhost:7093/api/Cart/2/8
+
+
+    var uri = Uri.parse(url);
+
+
+    await http.post(uri);
+
+
+    
+    notifyListeners();
   }
 
-  Future<void> removeFromCart(Product product) async {
-    try {
-      var cartItem = findInCart(product);
-      if (cartItem == null || cartItem.id == 0) return;
-      
-      var uri = Uri.parse("${_baseUrl}cart/items/${cartItem.id}");
-      var headers = _createHeaders();
-      
-      var response = await http.delete(uri, headers: headers);
-      
-      if (response.statusCode < 299) {
-        await loadCart();
-      }
-    } catch (e) {
-      print("Error removing from cart: $e");
-    }
+
+  Future<void> removeItemAsync(int productId) async
+  
+   {
+     var url = "$_baseUrl/$userId/$productId"; // https://localhost:7093/api/Cart/2/8
+
+
+    var uri = Uri.parse(url);
+
+
+    await http.delete(uri);
+
+
+    notifyListeners();
   }
 
-  CartItem? findInCart(Product product) {
-    CartItem? item = cart.items.firstWhereOrNull((item) => item.product.id == product.id);
-    return item;
+    Future<void> clearCartAysnc() async{
+
+     var url = "$_baseUrl/$userId"; // https://localhost:7093/api/Cart/2
+
+
+    var uri = Uri.parse(url);
+
+
+    await http.delete(uri);
+
+    cart = Cart();
+
+    notifyListeners();
   }
+
+    Future<void> checkoutAysnc() async{
+
+     var url = "$_baseUrl/$userId/checkout"; // https://localhost:7093/api/Cart/2
+
+
+    var uri = Uri.parse(url);
+
+
+    await http.post(uri);
+
+    cart = Cart();
+
+    notifyListeners();
+  }
+
+
+
+
+
 }

@@ -1,16 +1,15 @@
 using eCommerce.Model.Requests;
 using eCommerce.Model.Responses;
+using eCommerce.Model.SearchObjects;
 using eCommerce.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace eCommerce.WebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
     public class CartController : ControllerBase
     {
         private readonly ICartService _cartService;
@@ -20,48 +19,41 @@ namespace eCommerce.WebAPI.Controllers
             _cartService = cartService;
         }
 
-        private int GetCurrentUserId()
+        [HttpGet("{userId}")]
+        public async Task<ActionResult<CartResponse>> GetAsync(int userId)
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
-                throw new UnauthorizedAccessException("User not authenticated");
-            return userId;
+            return await _cartService.GetAsync(userId);
         }
 
-        [HttpGet]
-        public async Task<CartResponse> GetCart()
+        [HttpGet("{username}/me")]
+        public async Task<int> GetUserIdAsync(string username)
         {
-            var userId = GetCurrentUserId();
-            return await _cartService.GetCartAsync(userId);
+            return await _cartService.GetUserIdAsync(username);
         }
 
-        [HttpPost("items")]
-        public async Task<CartItemResponse> AddItem([FromBody] CartItemInsertRequest request)
+        [HttpPost("{userId}/{productId}")]
+        public async Task<bool> AddItemAsync(int userId, int productId)
         {
-            var userId = GetCurrentUserId();
-            return await _cartService.AddItemAsync(userId, request);
+            return await _cartService.AddItemAsync(userId,productId);
         }
 
-        [HttpPut("items/{itemId}")]
-        public async Task<CartItemResponse?> UpdateItem(int itemId, [FromBody] CartItemUpdateRequest request)
+        [HttpDelete("{userId}/{productId}")]
+        public async Task<bool> RemoveItemAsync(int userId, int productId)
         {
-            var userId = GetCurrentUserId();
-            return await _cartService.UpdateItemAsync(userId, itemId, request);
+            return await _cartService.RemoveItemAsync(userId, productId);
         }
 
-        [HttpDelete("items/{itemId}")]
-        public async Task<bool> RemoveItem(int itemId)
+        [HttpDelete("{userId}")]
+        public async Task<bool> ClearCartAysnc(int userId)
         {
-            var userId = GetCurrentUserId();
-            return await _cartService.RemoveItemAsync(userId, itemId);
+            return await _cartService.ClearCartAysnc(userId);
         }
 
-        [HttpDelete]
-        public async Task<bool> ClearCart()
+        [HttpPost("{userId}/checkout")]
+        public async Task<bool> CheckoutAysnc(int userId)
         {
-            var userId = GetCurrentUserId();
-            return await _cartService.ClearCartAsync(userId);
+            return await _cartService.CheckoutAysnc(userId);
         }
+
     }
-}
-
+} 

@@ -133,8 +133,8 @@ class _ProductListState extends State<ProductList> {
           ),
           Text(x.name),
           Text(formatNumber(x.price)),
-          IconButton(onPressed: () {
-              cartProvider?.addToCart(x);
+          IconButton(onPressed: () async {
+              await cartProvider.addItemAsync(x.id);
           }, icon: Icon(Icons.shopping_cart))
         ],
       ),

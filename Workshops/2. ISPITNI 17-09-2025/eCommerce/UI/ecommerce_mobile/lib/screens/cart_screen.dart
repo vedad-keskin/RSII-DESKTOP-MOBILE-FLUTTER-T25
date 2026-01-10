@@ -1,4 +1,5 @@
 import 'package:ecommerce_mobile/layouts/master_screen.dart';
+import 'package:ecommerce_mobile/model/cart_item.dart';
 import 'package:ecommerce_mobile/model/cart_provider.dart';
 import 'package:ecommerce_mobile/model/cart.dart';
 import 'package:ecommerce_mobile/providers/utils.dart';
@@ -19,8 +20,13 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     super.initState();
     cartProvider = context.read<CartProvider>();
-    cartProvider.loadCart();
+    _loadCart();
   }
+
+    void _loadCart() async {
+       await cartProvider.getAsync(CartProvider.userId);
+
+    }
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +59,21 @@ class _CartScreenState extends State<CartScreen> {
             "Cart Items (${cartProvider.cart.items.length})",
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
+
+          Spacer(),
+          if(cartProvider.cart.items.isNotEmpty)
+          TextButton(onPressed:() async
+          {
+              await cartProvider.clearCartAysnc();
+          }
+          , child: Text(
+            "Clear Cart",
+            style: TextStyle(color: Colors.red)
+            ),
+          ),
+          
+
+
         ],
       ),
     );
@@ -151,8 +172,9 @@ class _CartScreenState extends State<CartScreen> {
                 ),
                 SizedBox(height: 8),
                 IconButton(
-                  onPressed: () {
-                    cartProvider.removeFromCart(item.product);
+                  onPressed: () async {
+                    await cartProvider.removeItemAsync(item.product.id);
+                    _loadCart();
                   },
                   icon: Icon(Icons.delete, color: Colors.red),
                 ),
@@ -205,10 +227,14 @@ class _CartScreenState extends State<CartScreen> {
           SizedBox(
             width: double.infinity,
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 // TODO: Implement checkout functionality
+
+                await cartProvider.checkoutAysnc();
+
+
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Checkout functionality not implemented yet")),
+                  const SnackBar(content: Text("Order placed succesfully", )),
                 );
               },
               style: ElevatedButton.styleFrom(
@@ -226,4 +252,6 @@ class _CartScreenState extends State<CartScreen> {
       ),
     );
   }
+  
+
 }
