@@ -4,10 +4,11 @@ using System.Text;
 
 namespace eCommerce.Model.SearchObjects
 {
-    public class ProductSearchObject : BaseSearchObject
+    public class FavoritiSearchObject 
     {
-        public string? Code { get; set; }
+        public DateTime? DateFrom { get; set; }
+        public DateTime? DateTo { get; set; }
+        public int? UserId { get; set; }
 
-        public string? CodeGTE { get; set; }
     }
 }
