@@ -14,7 +14,8 @@ namespace eCommerce.Services
     {
         Task<List<FavoritiResponse>> GetAsync(FavoritiSearchObject search);
         Task<bool> AddFavouritesAsync(int userId, int productId);
-        Task<bool> RemoveFavouritesAsync(int id);
+        Task<bool> RemoveFavouritesAsync(int userId, int productId);
+        Task<int> GetUserIdAsync(string username);
 
     }
 }

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:ecommerce_mobile/model/favoriti.dart';
 import 'package:ecommerce_mobile/model/product.dart';
 import 'package:ecommerce_mobile/model/search_result.dart';
@@ -12,12 +11,64 @@ class FavoritiProvider with ChangeNotifier {
 
   static String? _baseUrl;
 
+  static int userId = 0;
+
   FavoritiProvider() {
 
        _baseUrl = const String.fromEnvironment("baseUrl",
         defaultValue: "https://localhost:7093/Favoriti");
 
   }
+
+  Future<bool> addFavouritesAsync(int userId, int productId) async {
+
+    var url = "$_baseUrl/${userId}/${productId}"; // "https://localhost:7093/Favoriti/2/2
+
+
+    var uri = Uri.parse(url);
+
+    var response = await http.post(uri);
+    
+    var data = jsonDecode(response.body);
+
+    return data;
+
+  }
+
+  Future<bool> removeFavouritesAsync(int userId, int productId) async {
+
+    var url = "$_baseUrl/${userId}/${productId}"; // "https://localhost:7093/Favoriti/2/2
+
+
+    var uri = Uri.parse(url);
+
+    var response = await http.delete(uri);
+    
+    var data = jsonDecode(response.body);
+
+    return data;
+
+  }
+
+
+    Future<int> getUserIdAsync(String username) async {
+
+    var url = "$_baseUrl/${username}"; // "https://localhost:7093/Favoriti/2/2
+
+
+    var uri = Uri.parse(url);
+
+    var response = await http.get(uri);
+    
+    var data = jsonDecode(response.body);
+
+    return data;
+
+  }
+
+
+
+
 
     Future<List<FavoritiIB180079>> getAsync({dynamic filter}) async {
 

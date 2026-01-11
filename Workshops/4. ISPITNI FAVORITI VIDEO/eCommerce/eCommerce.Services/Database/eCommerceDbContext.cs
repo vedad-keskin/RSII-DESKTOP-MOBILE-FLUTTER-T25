@@ -314,6 +314,12 @@ namespace eCommerce.Services.Database
                 new UserRole { Id = 2, UserId = 2, RoleId = 2, DateAssigned = DateTime.UtcNow }
             );
 
+            modelBuilder.Entity<FavoritiIB180079>().HasData(
+             new FavoritiIB180079 { Id = 1, UserId = 2, ProductId = 4, CreatedAt = DateTime.UtcNow },
+             new FavoritiIB180079 { Id = 2, UserId = 2, ProductId = 5, CreatedAt = DateTime.UtcNow }
+            );
+
+
         }
     }
 }

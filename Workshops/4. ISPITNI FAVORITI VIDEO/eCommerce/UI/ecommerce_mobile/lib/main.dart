@@ -142,6 +142,12 @@ class LoginPage extends StatelessWidget {
                     if (_usernameController.text == "") {}
                     try {
                       await provider.get();
+
+                      FavoritiProvider favoritiProvider = new FavoritiProvider();
+
+                      FavoritiProvider.userId = await favoritiProvider.getUserIdAsync(AuthProvider.username!);
+                      
+
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => ProductList()));
                     } on Exception catch (e) {

@@ -87,10 +87,10 @@ namespace eCommerce.Services
 
         }
 
-        public async Task<bool> RemoveFavouritesAsync(int id)
+        public async Task<bool> RemoveFavouritesAsync(int userId, int productId)
         {
 
-            var favourite = await _context.FavoritiIB180079.FindAsync(id);
+            var favourite = await _context.FavoritiIB180079.Where(x => x.UserId == userId && x.ProductId == productId).FirstOrDefaultAsync();
             
             if(favourite == null)
             {
@@ -101,6 +101,23 @@ namespace eCommerce.Services
             await _context.SaveChangesAsync();
 
             return true;
+
+        }
+
+        public async Task<int> GetUserIdAsync(string username)
+        {
+
+            var loggedInUser = await _context.Users.Where(x => x.Username == username).FirstOrDefaultAsync();
+
+            if(loggedInUser == null)
+            {
+
+                return 2;
+
+            }
+
+            return loggedInUser.Id;
+
 
         }
 
