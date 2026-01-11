@@ -92,7 +92,7 @@ namespace eCommerce.Services
         public async Task<bool> RemoveFavouritesAsync(int userId, int productId)
         {
 
-            var favourite = await _context.FavoritiIB180079.Where(x => x.UserId == userId && x.ProductId == productId).FirstAsync();
+            var favourite = await _context.FavoritiIB180079.Where(x => x.UserId == userId && x.ProductId == productId).FirstOrDefaultAsync();
             
             if(favourite == null)
             {
@@ -110,6 +110,25 @@ namespace eCommerce.Services
         {
 
             var loggedInUser = await _context.Users.Where(x => x.Username == username).FirstOrDefaultAsync();
+
+            if(loggedInUser == null)
+            {
+
+                return 2;
+
+            }
+
+            return loggedInUser.Id;
+
+
+        }
+
+        //protected override IQueryable<Database.Product> ApplyFilter(IQueryable<Database.Product> query, ProductSearchObject search)
+        //{
+        //    if (!string.IsNullOrEmpty(search.FTS))
+        //    {
+        //        query = query.Where(p => p.Name.Contains(search.FTS) || p.Description.Contains(search.FTS));
+        //    }
 
             if (loggedInUser == null)
             {

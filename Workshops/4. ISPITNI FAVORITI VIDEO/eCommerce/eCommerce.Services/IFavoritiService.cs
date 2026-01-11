@@ -17,6 +17,5 @@ namespace eCommerce.Services
         Task<bool> RemoveFavouritesAsync(int userId, int productId);
         Task<int> GetUserIdAsync(string username);
 
-
     }
 }

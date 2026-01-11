@@ -23,13 +23,13 @@ namespace eCommerce.WebAPI.Controllers
         [HttpPost("{userId}/{productId}")]
         public async Task<bool> AddFavouritesAsync(int userId, int productId)
         {
-            return await _favoritiService.AddFavouritesAsync(userId,productId);
+            return await _favoritiService.AddFavouritesAsync(userId, productId);
         }
 
         [HttpDelete("{userId}/{productId}")]
         public async Task<bool> RemoveFavouritesAsync(int userId, int productId)
         {
-            return await _favoritiService.RemoveFavouritesAsync(userId,productId);
+            return await _favoritiService.RemoveFavouritesAsync(userId, productId);
         }
 
         [HttpGet]
@@ -38,7 +38,7 @@ namespace eCommerce.WebAPI.Controllers
             return await _favoritiService.GetAsync(search ?? new FavoritiSearchObject());
         }
 
-        [HttpGet("{username}/me")]
+        [HttpGet("{username}")]
         public async Task<int> GetUserIdAsync(string username)
         {
             return await _favoritiService.GetUserIdAsync(username);
