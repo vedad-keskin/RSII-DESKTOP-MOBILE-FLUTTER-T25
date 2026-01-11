@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'package:ecommerce_mobile/model/favoriti.dart';
-import 'package:ecommerce_mobile/providers/base_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class FavoritiProvider with ChangeNotifier  {
 
+  static int userId = 0;
 
   static String? _baseUrl;
 
@@ -43,21 +43,34 @@ return result;
   }
 
 
-  // Future<bool> addFavourites(int userId, int productId) async {
-  //   const baseUrl = "https://localhost:7093/api/";
-  //   var url = "${baseUrl}Favoriti/$userId/$productId";
-  //   var uri = Uri.parse(url);
-  //   var headers = createHeaders();
+  Future<bool> addFavourites(int userId, int productId) async {
+    var url = "${_baseUrl}/$userId/$productId";
+    var uri = Uri.parse(url);
+    var response = await http.post(uri);
+    var data = jsonDecode(response.body);
+    return data == true;
+  }
 
-  //   var response = await http.post(uri, headers: headers);
+  Future<int> getUserIdAsync(String username) async {
 
-  //   if (isValidResponse(response)) {
-  //     return jsonDecode(response.body) == true;
-  //   } else {
-  //     throw new Exception("Unknown error");
-  //   }
-  // }
 
+    var url = "$_baseUrl/$username/me"; // https://localhost:7093/api/Cart/2
+
+
+    var uri = Uri.parse(url);
+
+
+  
+
+    var response = await http.get(uri);
+
+    var data = jsonDecode(response.body);
+  
+       
+    return data;  
+
+ 
+  }
 
 
 
@@ -96,18 +109,11 @@ return result;
   }
 
 
-  // Future<bool> removeFavourites(int id) async {
-  //   const baseUrl = "https://localhost:7093/api/";
-  //   var url = "${baseUrl}Favoriti/$id";
-  //   var uri = Uri.parse(url);
-  //   var headers = createHeaders();
-
-  //   var response = await http.delete(uri, headers: headers);
-
-  //   if (isValidResponse(response)) {
-  //     return jsonDecode(response.body) == true;
-  //   } else {
-  //     throw new Exception("Unknown error");
-  //   }
-  // }
+  Future<bool> removeFavourites(int userId, int productId) async {
+    var url = "${_baseUrl}/$userId/$productId";
+    var uri = Uri.parse(url);
+    var response = await http.delete(uri);
+    var data = jsonDecode(response.body);
+    return data == true;
+  }
 }

@@ -1,6 +1,8 @@
 import 'package:ecommerce_mobile/layouts/master_screen.dart';
 import 'package:ecommerce_mobile/model/favoriti.dart';
+import 'package:ecommerce_mobile/model/cart_provider.dart';
 import 'package:ecommerce_mobile/providers/favoriti_provider.dart';
+import 'package:ecommerce_mobile/providers/product_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +15,8 @@ class FrmFavoritiIB180079 extends StatefulWidget {
 
 class _FrmFavoritiIB180079State extends State<FrmFavoritiIB180079> {
   late FavoritiProvider favoritiProvider;
+  late CartProvider cartProvider;
+  late ProductProvider productProvider;
 
   DateTime? dateFrom;
   DateTime? dateTo;
@@ -23,6 +27,8 @@ class _FrmFavoritiIB180079State extends State<FrmFavoritiIB180079> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     favoritiProvider = context.read<FavoritiProvider>();
+    cartProvider = context.read<CartProvider>();
+    productProvider = context.read<ProductProvider>();
   }
 
   @override
@@ -119,16 +125,26 @@ class _FrmFavoritiIB180079State extends State<FrmFavoritiIB180079> {
           DataColumn(label: Text("User Full Name")),
           DataColumn(label: Text("Product Name")), 
           DataColumn(label: Text("Created At")),
+          DataColumn(label: Text("Action")),
         ],
         rows: favoriti?.map((e) => DataRow(
-          // onSelectChanged: (value) {
-          //   Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: e)));
-          // },
           cells: [
             DataCell(Text(e.id.toString())),
             DataCell(Text(e.userFullName)),
             DataCell(Text(e.productName)),
             DataCell(Text(e.createdAt.toString())),
+            DataCell(
+                IconButton(
+                  icon: const Icon(Icons.shopping_cart),
+                  onPressed: () async {
+                    var products = await productProvider.get();
+                    var selectedProduct = products.items?.where((x) => x.name == e.productName).firstOrNull;
+                    if (selectedProduct != null) {
+                      cartProvider.addToCart(selectedProduct);
+                    }
+                  },
+                ),
+            ),
           ])).toList() ?? [],
       ),
       ),

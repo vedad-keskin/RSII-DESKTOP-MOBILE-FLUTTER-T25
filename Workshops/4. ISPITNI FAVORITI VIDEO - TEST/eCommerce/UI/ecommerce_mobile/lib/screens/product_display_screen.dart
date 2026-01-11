@@ -1,8 +1,11 @@
 import 'package:ecommerce_mobile/layouts/master_screen.dart';
 import 'package:ecommerce_mobile/model/product.dart';
+import 'package:ecommerce_mobile/providers/auth_provider.dart';
 import 'package:ecommerce_mobile/providers/utils.dart';
+import 'package:ecommerce_mobile/providers/favoriti_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 
 class ProductDisplayScreen extends StatefulWidget {
@@ -14,6 +17,14 @@ class ProductDisplayScreen extends StatefulWidget {
 }
 
 class _ProductDisplayScreenState extends State<ProductDisplayScreen> {
+  late FavoritiProvider favoritiProvider;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    favoritiProvider = context.read<FavoritiProvider>();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MasterScreen(
@@ -40,17 +51,20 @@ class _ProductDisplayScreenState extends State<ProductDisplayScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
 
                children: [
-              ElevatedButton(onPressed: (){
-              // TODO Add to F
+              ElevatedButton(onPressed: () async {
 
+                var userId = FavoritiProvider.userId;
 
+                await favoritiProvider.addFavourites(userId, widget.product!.id);
               }, child: Text("Add to Favorites")),
               SizedBox(width: 20),
 
-              ElevatedButton(onPressed: (){
-              // TODO Remove from F
+              ElevatedButton(onPressed: () async {
 
-
+                var userId = FavoritiProvider.userId;
+              
+                  await favoritiProvider.removeFavourites(userId, widget.product!.id);
+               
               }, child: Text("Remove from Favorites"))
 
 

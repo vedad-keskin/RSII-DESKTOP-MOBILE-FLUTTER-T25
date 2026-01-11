@@ -83,6 +83,8 @@ namespace eCommerce.Services
                 CreatedAt = favorit.CreatedAt,
                 UserFullName = $"{favorit.User.FirstName} {favorit.User.LastName}",
                 ProductName = favorit.Product.Name,
+                ProductId = favorit.ProductId,
+                UserId = favorit.UserId
             };
 
         }
@@ -128,10 +130,17 @@ namespace eCommerce.Services
         //        query = query.Where(p => p.Name.Contains(search.FTS) || p.Description.Contains(search.FTS));
         //    }
 
-        //    query = query.Include(x => x.Assets);
+            if (loggedInUser == null)
+            {
+                //throw new KeyNotFoundException("User not found.");
+                return 2;
+            }
 
-        //    return query;
-        //}
+
+            //return loggedInUser?.Id ?? 2;
+            return loggedInUser.Id;
+
+        }
 
 
     }
