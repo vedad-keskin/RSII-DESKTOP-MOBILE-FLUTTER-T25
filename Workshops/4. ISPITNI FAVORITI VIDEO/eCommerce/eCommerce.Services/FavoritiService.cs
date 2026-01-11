@@ -83,14 +83,16 @@ namespace eCommerce.Services
                 CreatedAt = favorit.CreatedAt,
                 UserFullName = $"{favorit.User.FirstName} {favorit.User.LastName}",
                 ProductName = favorit.Product.Name,
+                ProductId = favorit.ProductId,
+                UserId = favorit.UserId
             };
 
         }
 
-        public async Task<bool> RemoveFavouritesAsync(int id)
+        public async Task<bool> RemoveFavouritesAsync(int userId, int productId)
         {
 
-            var favourite = await _context.FavoritiIB180079.FindAsync(id);
+            var favourite = await _context.FavoritiIB180079.Where(x => x.UserId == userId && x.ProductId == productId).FirstAsync();
             
             if(favourite == null)
             {
@@ -104,17 +106,22 @@ namespace eCommerce.Services
 
         }
 
-        //protected override IQueryable<Database.Product> ApplyFilter(IQueryable<Database.Product> query, ProductSearchObject search)
-        //{
-        //    if (!string.IsNullOrEmpty(search.FTS))
-        //    {
-        //        query = query.Where(p => p.Name.Contains(search.FTS) || p.Description.Contains(search.FTS));
-        //    }
+        public async Task<int> GetUserIdAsync(string username)
+        {
 
-        //    query = query.Include(x => x.Assets);
+            var loggedInUser = await _context.Users.Where(x => x.Username == username).FirstOrDefaultAsync();
 
-        //    return query;
-        //}
+            if (loggedInUser == null)
+            {
+                //throw new KeyNotFoundException("User not found.");
+                return 2;
+            }
+
+
+            //return loggedInUser?.Id ?? 2;
+            return loggedInUser.Id;
+
+        }
 
 
     }
