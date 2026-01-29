@@ -11,7 +11,7 @@ namespace eCommerce.WebAPI.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]
+    //[Authorize]
     public class BaseController<T, TSearch> : ControllerBase where T : class where TSearch : BaseSearchObject, new()
     {
         protected readonly IService<T, TSearch> _service;

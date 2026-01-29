@@ -1,6 +1,7 @@
 import 'package:ecommerce_mobile/model/cart_provider.dart';
 import 'package:ecommerce_mobile/providers/auth_provider.dart';
 import 'package:ecommerce_mobile/providers/logged_product_provider.dart';
+import 'package:ecommerce_mobile/providers/product_discount_provider.dart';
 import 'package:ecommerce_mobile/providers/product_provider.dart';
 import 'package:ecommerce_mobile/providers/product_type_provider.dart';
 import 'package:ecommerce_mobile/providers/unit_of_measure_provider.dart';
@@ -17,6 +18,7 @@ void main() {
     ChangeNotifierProvider<ProductTypeProvider>(
         create: (context) => ProductTypeProvider()),
     ChangeNotifierProvider<CartProvider>(create: (context) => CartProvider()),
+    ChangeNotifierProvider<ProductDiscountProvider>(create: (context) => ProductDiscountProvider()),
   ], child: const MyLoginApp()));
 }
 
@@ -37,8 +39,8 @@ class MyLoginApp extends StatelessWidget {
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
-  final TextEditingController _usernameController = new TextEditingController();
-  final TextEditingController _passwordController = new TextEditingController();
+  final TextEditingController _usernameController =  TextEditingController(text: "admin");
+  final TextEditingController _passwordController =  TextEditingController(text: "Test123");
 
   @override
   Widget build(BuildContext context) {

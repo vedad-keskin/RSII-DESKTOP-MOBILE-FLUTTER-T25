@@ -63,6 +63,9 @@ namespace eCommerce.Services.Database
         // Navigation property for cart items
         public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
 
+        // Navigation property for product discounts
+        public ICollection<ProductDiscount> ProductDiscounts { get; set; } = new List<ProductDiscount>();
+
         [MaxLength(1000)]
         public string ProductState { get; set; } = string.Empty;
     }
