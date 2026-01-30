@@ -48,10 +48,32 @@ class _ProductDiscountListState extends State<ProductDiscountList> {
         child: Column(
           children: [
             _buildSearch(),
-            _buildResultView()
+            _buildResultView(),
+            _buildTotalDiscount(),
           ],
         ),
       ),
+    );
+  }
+
+  double get _totalDiscountAmount {
+    if (productDiscounts?.items == null) return 0;
+    //return productDiscounts!.items!.fold(0.0, (sum, e) => sum + (e.productPrice - e.newPrice));
+
+    double totalDiscountAmount = 0;
+
+    for (var item in productDiscounts!.items!) {
+      totalDiscountAmount += item.productPrice - item.newPrice;
+    }
+    return totalDiscountAmount;
+
+
+  }
+
+  Widget _buildTotalDiscount() {
+    return Padding(
+      padding: EdgeInsets.all(16),
+      child: Text("Total discounted: ${_totalDiscountAmount.toStringAsFixed(2)}"),
     );
   }
 
@@ -116,11 +138,12 @@ class _ProductDiscountListState extends State<ProductDiscountList> {
         columns: [
           DataColumn(label: Text("Picture")),
           DataColumn(label: Text("Product")),
-          DataColumn(label: Text("Price")), 
+          DataColumn(label: Text("Price")),
           DataColumn(label: Text("Discount")),
           DataColumn(label: Text("New Price")),
           DataColumn(label: Text("Date From")),
           DataColumn(label: Text("Date To")),
+          DataColumn(label: Text("")),
         ],
         rows: productDiscounts?.items?.map((e) => DataRow(
           onSelectChanged: (value) {
@@ -140,7 +163,15 @@ class _ProductDiscountListState extends State<ProductDiscountList> {
             DataCell(Text(e.newPrice.toString())),
             DataCell(Text(e.dateFrom?.toString() ?? "")),
             DataCell(Text(e.dateTo?.toString() ?? "")),
-          ])).toList() ?? [],
+            DataCell(IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () async {
+                await productDiscountProvider.delete(e.id);
+                loadData();
+              },
+            )),
+          ],
+        )).toList() ?? [],
       ),
       ),
     ));
