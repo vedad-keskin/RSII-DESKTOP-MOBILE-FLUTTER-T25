@@ -11,6 +11,7 @@ import 'package:ecommerce_mobile/providers/product_discount_provider.dart';
 import 'package:ecommerce_mobile/providers/product_provider.dart';
 import 'package:ecommerce_mobile/providers/product_type_provider.dart';
 import 'package:ecommerce_mobile/providers/unit_of_measure_provider.dart';
+import 'package:ecommerce_mobile/screens/product_discount_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
@@ -43,7 +44,6 @@ class _ProductDiscountAddState extends State<ProductDiscountAdd> {
     productDiscountProvider = Provider.of<ProductDiscountProvider>(context, listen: false);
 
     productProvider = Provider.of<ProductProvider>(context, listen: false);
-
 
     _initalValue = {
       "productId": widget.productDiscount?.productId,
@@ -81,19 +81,33 @@ class _ProductDiscountAddState extends State<ProductDiscountAdd> {
       onPressed: () async {
         formKey.currentState?.saveAndValidate();
         if (formKey.currentState?.validate() ?? false) {
-          print(formKey.currentState?.value.toString());
           var request = Map.from(formKey.currentState?.value ?? {});
+          var from = request['dateFrom'] as DateTime?;
+          var to = request['dateTo'] as DateTime?;
+          request['dateFrom'] = from?.toIso8601String();
+          request['dateTo'] = to?.toIso8601String();
+
+         try {
           if (widget.productDiscount == null) {
             widget.productDiscount = await productDiscountProvider.insert(request);
           } else {
             widget.productDiscount = await productDiscountProvider.update(widget.productDiscount!.id, request);
           }
+
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDiscountList()));
+        } catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("${e.toString()}")),
+          );
+        }
+
+
         }
       },
       child: Text("Save"),
     );
   }
-  
+
   File? _image;
   String? _base64Image;
 
@@ -125,8 +139,24 @@ class _ProductDiscountAddState extends State<ProductDiscountAdd> {
                             .toList() ??
                         [],
                   )),
-                
                 ],
+              ),
+              SizedBox(height: 8),
+              FormBuilderDateTimePicker(
+                name: "dateFrom",
+                decoration: InputDecoration(labelText: "Date From"),
+                inputType: InputType.date,
+                initialValue: widget.productDiscount?.dateFrom,
+                firstDate: DateTime(2020),
+                lastDate: DateTime(2030),
+              ),
+              FormBuilderDateTimePicker(
+                name: "dateTo",
+                decoration: InputDecoration(labelText: "Date To"),
+                inputType: InputType.date,
+                initialValue: widget.productDiscount?.dateTo,
+                firstDate: DateTime(2020),
+                lastDate: DateTime(2030),
               ),
 
               

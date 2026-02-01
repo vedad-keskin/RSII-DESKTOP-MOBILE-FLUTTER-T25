@@ -6,6 +6,7 @@ import 'package:ecommerce_mobile/providers/product_discount_provider.dart';
 import 'package:ecommerce_mobile/providers/utils.dart';
 import 'package:ecommerce_mobile/screens/product_discount_add.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ProductDiscountList extends StatefulWidget {
@@ -161,11 +162,11 @@ class _ProductDiscountListState extends State<ProductDiscountList> {
             DataCell(Text(e.productName)),
             DataCell(Text(e.productPrice.toString())),
             DataCell(Text(e.discount.toString())),
-            DataCell(Text(e.newPrice.toString())),
-            DataCell(Text(e.dateFrom?.toString() ?? "")),
-            DataCell(Text(e.dateTo?.toString() ?? "")),
+            DataCell(Text(e.newPrice.toStringAsFixed(2))),
+            DataCell(Text(DateFormat("dd.MM.yyyy").format(e.dateFrom ?? DateTime.now()))),
+            DataCell(Text(DateFormat("dd.MM.yyyy").format(e.dateTo ?? DateTime.now()))),
             DataCell(IconButton(
-              icon: Icon(Icons.delete),
+              icon: Icon(Icons.delete), 
               onPressed: () async {
                 await productDiscountProvider.delete(e.id);
                 loadData();
