@@ -4,6 +4,7 @@ import 'package:ecommerce_mobile/model/product_discount.dart';
 import 'package:ecommerce_mobile/model/search_result.dart';
 import 'package:ecommerce_mobile/providers/product_discount_provider.dart';
 import 'package:ecommerce_mobile/providers/utils.dart';
+import 'package:ecommerce_mobile/screens/product_discount_add.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -121,7 +122,7 @@ class _ProductDiscountListState extends State<ProductDiscountList> {
             SizedBox(width: 10),
             ElevatedButton(
               onPressed: () {
-                // Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: null)));
+                 Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDiscountAdd(productDiscount: null)));
               },
               child: Text("New"),
             )
@@ -147,7 +148,7 @@ class _ProductDiscountListState extends State<ProductDiscountList> {
         ],
         rows: productDiscounts?.items?.map((e) => DataRow(
           onSelectChanged: (value) {
-            // Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: e)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDiscountAdd(productDiscount: e)));
           },
           cells: [
             DataCell(    Container(
