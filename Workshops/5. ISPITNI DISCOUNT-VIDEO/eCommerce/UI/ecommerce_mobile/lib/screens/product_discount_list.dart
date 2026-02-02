@@ -3,7 +3,9 @@ import 'package:ecommerce_mobile/model/product_discount.dart';
 import 'package:ecommerce_mobile/model/search_result.dart';
 import 'package:ecommerce_mobile/providers/product_discount_provider.dart';
 import 'package:ecommerce_mobile/providers/utils.dart';
+import 'package:ecommerce_mobile/screens/product_discount_add.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ProductDiscountList extends StatefulWidget {
@@ -104,7 +106,7 @@ class _ProductDiscountListState extends State<ProductDiscountList> {
             SizedBox(width: 10),
             ElevatedButton(
               onPressed: () {
-                // Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: null)));
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDiscountAdd(productDiscount: null)));
               },
               child: Text("New"),
             )
@@ -131,7 +133,7 @@ class _ProductDiscountListState extends State<ProductDiscountList> {
         ],
         rows: productDiscounts?.items?.map((e) => DataRow(
           onSelectChanged: (value) {
-            // Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDetailsScreen(product: e)));
+             Navigator.push(context, MaterialPageRoute(builder: (context) => ProductDiscountAdd(productDiscount: e)));
           },
           cells: [
             DataCell(
@@ -149,8 +151,8 @@ class _ProductDiscountListState extends State<ProductDiscountList> {
             DataCell(Text(formatNumber(e.productPrice))),
             DataCell(Text(formatNumber(e.discount))),
             DataCell(Text(formatNumber(e.newPrice))),
-            DataCell(Text(e.dateFrom?.toString() ?? "")),
-            DataCell(Text(e.dateTo?.toString() ?? "")),
+            DataCell(Text(DateFormat("dd.MM.yyyy").format(e.dateFrom ?? DateTime.now()))),
+            DataCell(Text(DateFormat("dd.MM.yyyy").format(e.dateTo ?? DateTime.now()))),
 DataCell(
 
    IconButton(icon: const Icon(Icons.delete),

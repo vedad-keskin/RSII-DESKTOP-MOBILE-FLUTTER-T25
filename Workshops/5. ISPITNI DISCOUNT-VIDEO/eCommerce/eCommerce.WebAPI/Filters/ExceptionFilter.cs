@@ -31,7 +31,7 @@ namespace eCommerce.WebAPI.Filters
             }
             else
             {
-                context.ModelState.AddModelError("ERROR", "Server side error, please check logs");
+                context.ModelState.AddModelError("ERROR", context.Exception.Message);
                 context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
 

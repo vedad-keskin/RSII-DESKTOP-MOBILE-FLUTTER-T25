@@ -44,9 +44,16 @@ namespace eCommerce.Services
                 Discount = entity?.Discount ?? 0,
                 DateFrom = entity?.DateFrom ?? DateTime.Now,
                 DateTo = entity?.DateTo ?? DateTime.Now,
-                NewPrice = entity.Product.Price * (1 - entity.Discount / 100 )
                 
             };
+
+            if(entity.Product != null)
+            {
+
+                response.NewPrice = entity.Product.Price * (1 - entity.Discount / 100);
+
+            }
+
 
             if(entity?.Product?.Assets != null)
             {
@@ -76,22 +83,64 @@ namespace eCommerce.Services
 
 
 
-        //protected override async Task BeforeInsert(Database.Role entity, RoleUpsertRequest request)
-        //{
-        //    // Check for duplicate role name
-        //    if (await _context.Roles.AnyAsync(r => r.Name == request.Name))
-        //    {
-        //        throw new InvalidOperationException("A role with this name already exists.");
-        //    }
-        //}
+        protected override async Task BeforeInsert(Database.ProductDiscount entity, ProductDiscountUpsertRequest request)
+        {
 
-        //protected override async Task BeforeUpdate(Database.Role entity, RoleUpsertRequest request)
-        //{
-        //    // Check for duplicate role name (excluding current role)
-        //    if (await _context.Roles.AnyAsync(r => r.Name == request.Name && r.Id != entity.Id))
-        //    {
-        //        throw new InvalidOperationException("A role with this name already exists.");
-        //    }
-        //}
+            await ValidateDiscountRequest(entity, request);
+
+        }
+
+
+        protected override async Task BeforeUpdate(Database.ProductDiscount entity, ProductDiscountUpsertRequest request)
+        {
+
+            await ValidateDiscountRequest(entity, request, entity.Id);
+
+        }
+        private async Task ValidateDiscountRequest(ProductDiscount entity, ProductDiscountUpsertRequest request, int excludeId = -1)
+        {
+            
+            if(request.DateFrom >= request.DateTo)
+            {
+
+                throw new InvalidOperationException("Date From must be less than Date To.");
+
+            }
+
+            if(request.Discount < 0 || request.Discount > 100)
+            {
+
+                throw new InvalidOperationException("Discount must be between 0 and 100 percent.");
+
+
+            }
+
+            var overlappingDiscount = await _context.ProductDiscounts
+                .AnyAsync(
+                x => 
+                x.ProductId == request.ProductId
+                && 
+                x.Id != excludeId
+
+                &&
+                (
+                (request.DateFrom >= x.DateFrom && request.DateFrom <= x.DateTo)
+                ||
+                (request.DateTo >= x.DateFrom && request.DateTo <= x.DateTo)
+                ||
+                (request.DateFrom <= x.DateFrom && request.DateTo >= x.DateTo)
+                )
+                );
+
+            if (overlappingDiscount)
+            {
+
+                throw new InvalidOperationException("A Product cannot have overlapping discounts. Please ensure the date ranges do not overlap.");
+
+
+            }
+
+
+        }
     }
 } 

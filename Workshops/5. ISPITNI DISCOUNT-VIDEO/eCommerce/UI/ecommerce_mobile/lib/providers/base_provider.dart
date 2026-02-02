@@ -102,7 +102,11 @@ abstract class BaseProvider<T> with ChangeNotifier {
       throw new Exception("Unauthorized");
     } else {
       print(response.body);
-      throw new Exception("Something bad happened please try again");
+      throw new Exception(
+
+         jsonDecode(response.body)["errors"]["ERROR"][0]
+
+      );
     }
   }
 
