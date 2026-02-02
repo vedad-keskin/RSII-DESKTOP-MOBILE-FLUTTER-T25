@@ -60,14 +60,24 @@ namespace eCommerce.Services
             }
 
 
-            // Check for overlapping discounts for the same product
+            // Check if any discount already exists in that period
             var overlappingDiscounts = await _context.ProductDiscounts
-                .Where(pd => pd.ProductId == request.ProductId 
-                    && pd.Id != excludeId  // Exclude current entity when updating
-                    && ((pd.DateFrom <= request.DateFrom && pd.DateTo >= request.DateFrom) ||
-                        (pd.DateFrom <= request.DateTo && pd.DateTo >= request.DateTo) ||
-                        (pd.DateFrom >= request.DateFrom && pd.DateTo <= request.DateTo)))
-                .AnyAsync();
+                .AnyAsync(x =>
+                    x.ProductId == request.ProductId &&
+                    x.Id != excludeId &&
+
+                    (
+                        // New start is within an existing range
+                        (request.DateFrom >= x.DateFrom && request.DateFrom <= x.DateTo) ||
+
+                        // New end is within an existing range
+                        (request.DateTo >= x.DateFrom && request.DateTo <= x.DateTo) ||
+
+                        // New range fully contains an existing range
+                        (request.DateFrom <= x.DateFrom && request.DateTo >= x.DateTo)
+                    )
+                );
+
 
             if (overlappingDiscounts)
             {
