@@ -118,18 +118,20 @@ namespace eCommerce.Services
             var overlappingDiscount = await _context.ProductDiscounts
                 .AnyAsync(
                 x => 
+
                 x.ProductId == request.ProductId
+
                 && 
+
                 x.Id != excludeId
 
                 &&
-                (
-                (request.DateFrom >= x.DateFrom && request.DateFrom <= x.DateTo)
+
+                ((request.DateFrom >= x.DateFrom && request.DateFrom <= x.DateTo)
                 ||
                 (request.DateTo >= x.DateFrom && request.DateTo <= x.DateTo)
                 ||
-                (request.DateFrom <= x.DateFrom && request.DateTo >= x.DateTo)
-                )
+                (request.DateFrom <= x.DateFrom && request.DateTo >= x.DateTo))
                 );
 
             if (overlappingDiscount)
