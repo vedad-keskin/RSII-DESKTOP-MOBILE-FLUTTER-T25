@@ -90,12 +90,15 @@ class _ProductDiscountAddState extends State<ProductDiscountAdd> {
 
           var request = Map.from(formKey.currentState?.value ?? {});
 
-          var from = request['dateFrom'] as DateTime?;
-          var to = request['dateTo'] as DateTime?;
+          //var from = request['dateFrom'] as DateTime?;
+          //var to = request['dateTo'] as DateTime?;
 
-          request['dateFrom'] = from?.toIso8601String();
-          request['dateTo'] = to?.toIso8601String();
+          //request['dateFrom'] = from?.toIso8601String();
+          //request['dateTo'] = to?.toIso8601String();
 
+
+          request['dateFrom'] = (request['dateFrom'] as DateTime).toIso8601String();
+          request['dateTo'] = (request['dateTo'] as DateTime).toIso8601String();
 
           if (widget.productDiscount == null) {
             widget.productDiscount = await productDiscountProvider.insert(request);
